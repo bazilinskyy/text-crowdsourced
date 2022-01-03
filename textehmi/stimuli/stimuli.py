@@ -58,5 +58,7 @@ class Stimuli:
             background.paste(overlay, (420, 375), overlay)
             # save as new file
             background.save(os.path.join(te.common.get_configs('path_stimuli'),
-                                         str(row['id']) + '_overlaid' + '.png'),
+                                         str(row['id']) +
+                                         '_overlaid' +
+                                         '.png'),
                             'PNG')
