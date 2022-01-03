@@ -49,7 +49,7 @@ def check_config(config_file_name: str = 'config',
         logger.error('Config file {} not found.', config_file_name)
         return False
     except json.decoder.JSONDecodeError:
-        logger.error('Config file badly formatted. Please update based on' +
+        logger.error('Config file {} badly formatted. Please update based on' +
                      ' default.config.', config_file_name)
         return False
     # load default.config file

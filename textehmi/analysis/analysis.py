@@ -21,7 +21,7 @@ matplotlib.use('TkAgg')
 logger = te.CustomLogger(__name__)  # use custom logger
 
 
-# todo: add optinal arguments to pass axis labels
+# todo: add optional arguments to pass axis labels
 class Analysis:
     # set template for plotly output
     template = te.common.get_configs('plotly_template')
