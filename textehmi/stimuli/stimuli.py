@@ -16,7 +16,7 @@ class Stimuli:
     mapping = pd.read_csv(te.common.get_configs('mapping_stimuli'))
 
     def __init__(self):
-        print('stimuli class here')
+        pass
 
     def create_stimuli(self):
         """
@@ -27,18 +27,11 @@ class Stimuli:
             columns_drop (list): columns dataframes in to ignore.
             save_file (bool, optional): flag for saving an html file with plot.
         """
-        logger.info('Creating stimuli.')
         # load mapping
         df = pd.read_csv(te.common.get_configs('mapping_stimuli'))
-        # load base image
-        background = Image.open(os.path.join(te.settings.root_dir,
-                                             'textehmi',
-                                             'stimuli',
-                                             'bg.png'))
-        # convert to RGBA
-        background = background.convert('RGBA')
         # load image with eHMI
         for index, row in df.iterrows():
+            logger.info('Creating stimulus for message {}.', row['text'])
             try:
                 overlay = Image.open(os.path.join(te.settings.root_dir,
                                                   'textehmi',
@@ -54,11 +47,31 @@ class Stimuli:
             # resize
             overlay = overlay.resize([int(0.5 * s) for s in overlay.size],
                                      Image.ANTIALIAS)
+            # load base image
+            background = Image.open(os.path.join(te.settings.root_dir,
+                                                 'textehmi',
+                                                 'stimuli',
+                                                 'bg.png'))
+            # convert to RGBA
+            background = background.convert('RGBA')
+            # choose coordinates of eHMI on car
+            if row['rows'] == 1:
+                coords = (420, 375)
+            elif row['rows'] == 2:
+                coords = (420, 350)
+            elif row['rows'] == 3:
+                coords = (420, 375)
+            elif row['rows'] == 4:
+                coords = (420, 305)
+            else:
+                logger.error('Unkown value of {} rows for stimulus {}.',
+                             row['rows'],
+                             row['id'])
             # overlay
-            background.paste(overlay, (420, 375), overlay)
+            background.paste(overlay, coords, overlay)
+            # disable transparency for jpg
+            background = background.convert('RGB')
             # save as new file
             background.save(os.path.join(te.common.get_configs('path_stimuli'),
-                                         str(row['id']) +
-                                         '_overlaid' +
-                                         '.png'),
-                            'PNG')
+                                         'image_' + str(row['id']) +
+                                         '.jpg'))

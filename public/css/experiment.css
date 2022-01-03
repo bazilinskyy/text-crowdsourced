@@ -31,3 +31,7 @@ body {
   margin-right: auto;
   width: 50%;
 }
+
+#jspsych-image-slider-response-wrapper {
+    margin: 0px;
+}
