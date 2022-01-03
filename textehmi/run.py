@@ -16,10 +16,7 @@ ANALYSE = False  # conduct analysis
 FILTER_DATA = True  # filter Appen and heroku data
 CLEAN_DATA = True  # clean Appen data
 REJECT_CHEATERS = True  # reject cheaters on Appen
-UPDATE_MAPPING = True  # update mapping with keypress data
 SHOW_OUTPUT = True  # should figures be plotted
-
-file_mapping = 'mapping.p'  # file to save updated mapping
 
 if __name__ == '__main__':
     # create sitmuli
