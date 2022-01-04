@@ -306,8 +306,6 @@ var image_ids_slice = image_ids.slice(0, n_images_per_participant);
     );
   }
 
-  // console.log(image_stimuli);
-
 var image_block_slider = {
     type: jsPsychImageSliderResponse,
     timeline: image_stimuli,
@@ -331,6 +329,13 @@ for (var i = 1; i < n_images_per_participant * n_images_repeat / n_images_break;
         stimulus: '<div class="alert alert-primary" role="alert" style="text-align: left;"><h4 class="alert-heading">Break</h4><p>You have now completed ' + images_done + ' images out of ' + n_images_per_participant * n_images_repeat + '.</p><hr><p class="mb-0">When ready press \'N\' to proceed to the next batch.</p></div>',
         choices: ['N']
     });
+}
+
+var preload = {
+    type: jsPsychPreload,
+    // show_progress_bar: true,
+    auto_preload: true,
+    // max_load_time: 3000000
 }
 
 // block for sending data
@@ -357,6 +362,7 @@ var fullscreen_exit = {
 var timeline = [];
 var between_blocks_count = 0;  // counter of shown between blocks
 // timeline.push(slider_block_1);
+timeline.push(preload);  // enter full screen
 timeline.push(fullscreen_enter);  // enter full screen
 timeline.push(instructions_block);
 timeline.push(image_block_slider);
@@ -372,11 +378,8 @@ if (debug) {
 
 /* Start the experiment */
 var jsPsych = initJsPsych({
-    auto_preload: true,
-    show_preload_progress_bar: true,
     show_progress_bar: true,
     auto_update_progress_bar: false,
-    max_load_time: 3000000,
     on_finish: function() {
         window.location.href = 'finish?work=' + worker_code;
     },
