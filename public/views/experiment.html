@@ -302,7 +302,7 @@ var image_ids_slice = image_ids.slice(0, n_images_per_participant);
 var image_block_slider = {
     type: jsPsychImageSliderResponse,
     timeline: image_stimuli,
-    labels: ['|<br>I would certainly not cross', '|<br>I would probably not cross', '|<br>I am not sure', '|<br>I would probably cross', '|<br>I would certainly cross'],
+    labels: ['<div class="slider-tick">|<br>I would certainly not cross</div>', '<div class="slider-tick">|<br>I would probably not cross</div>', '<div class="slider-tick">|<br>I am not sure</div>', '<div class="slider-tick">|<br>I would probably cross</div>', '<div class="slider-tick">|<br>I would certainly cross</div>'],
     slider_width: 1000,
     // labels: ['Not intuitive at all', 'Completely intuitive'],
     prompt: "<p style='width: 1000px'><strong>Would you cross the road?</strong></p>",

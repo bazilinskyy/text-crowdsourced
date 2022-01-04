@@ -35,3 +35,7 @@ body {
 #jspsych-image-slider-response-wrapper {
     margin: 0px !important;
 }
+
+.slider-tick {
+    line-height: 1.4em;
+}
