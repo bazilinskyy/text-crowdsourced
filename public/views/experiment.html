@@ -335,49 +335,49 @@ var preload = {
     // max_load_time: 3000000
 }
 
-// block for questions about English
-// from https://www.europa-school.co.uk/language-level-test/
-var questions_english = {
-  type: jsPsychSurveyMultiChoice,
-  preamble: 'For the questions below, please choose the best option to complete the conversation.',
-  questions: [
-    {
-      prompt: 'Can I park here?', 
-      name: 'q0', 
-      options: ['Sorry, I did that.', 'It\'s the same place.', 'Only for half an hour.'], 
-      required: true,
-      horizontal: false
-    }, 
-    {
-      prompt: 'What colour will you paint the children\'s bedroom?', 
-      name: 'q1', 
-      options: ['I hope it was right.', 'We can\'t decide.', 'It wasn\'t very difficult.'], 
-      required: true,
-      horizontal: false
-    }, 
-    {
-      prompt: 'I can\'t understand this email.', 
-      name: 'q2', 
-      options: ['Would you like some help?', 'Don\'t you know?', 'I suppose you can.'], 
-      required: true,
-      horizontal: false
-    }, 
-    {
-      prompt: 'I\'d like two tickets for tomorrow night.', 
-      name: 'q3', 
-      options: ['How much did you pay?', 'Afternoon and evening.', 'I\'ll just check for you.'], 
-      required: true,
-      horizontal: false
-    }, 
-    {
-      prompt: 'Shall we go to the gym now?', 
-      name: 'q4', 
-      options: ['I\'m too tired.', 'It\'s very good.', 'Not at all.'], 
-      required: true,
-      horizontal: false
-    }
-  ],
-};
+// // block for questions about English
+// // from https://www.europa-school.co.uk/language-level-test/
+// var questions_english = {
+//   type: jsPsychSurveyMultiChoice,
+//   preamble: 'For the questions below, please choose the best option to complete the conversation.',
+//   questions: [
+//     {
+//       prompt: 'Can I park here?', 
+//       name: 'q0', 
+//       options: ['Sorry, I did that.', 'It\'s the same place.', 'Only for half an hour.'], 
+//       required: true,
+//       horizontal: false
+//     }, 
+//     {
+//       prompt: 'What colour will you paint the children\'s bedroom?', 
+//       name: 'q1', 
+//       options: ['I hope it was right.', 'We can\'t decide.', 'It wasn\'t very difficult.'], 
+//       required: true,
+//       horizontal: false
+//     }, 
+//     {
+//       prompt: 'I can\'t understand this email.', 
+//       name: 'q2', 
+//       options: ['Would you like some help?', 'Don\'t you know?', 'I suppose you can.'], 
+//       required: true,
+//       horizontal: false
+//     }, 
+//     {
+//       prompt: 'I\'d like two tickets for tomorrow night.', 
+//       name: 'q3', 
+//       options: ['How much did you pay?', 'Afternoon and evening.', 'I\'ll just check for you.'], 
+//       required: true,
+//       horizontal: false
+//     }, 
+//     {
+//       prompt: 'Shall we go to the gym now?', 
+//       name: 'q4', 
+//       options: ['I\'m too tired.', 'It\'s very good.', 'Not at all.'], 
+//       required: true,
+//       horizontal: false
+//     }
+//   ],
+// };
 
 // block for sending data
 var save_data_block = {
@@ -405,7 +405,7 @@ var between_blocks_count = 0;  // counter of shown between blocks
 // timeline.push(slider_block_1);
 timeline.push(preload);  // enter full screen
 timeline.push(fullscreen_enter);  // enter full screen
-timeline.push(questions_english);
+// timeline.push(questions_english);
 timeline.push(instructions_block);
 timeline.push(image_block_slider);
 timeline.push(fullscreen_exit);  // exit full screen
