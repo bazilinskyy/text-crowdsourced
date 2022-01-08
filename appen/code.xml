@@ -23,7 +23,7 @@
   <cml:radio label="Other" id="" value="other"/>
   <cml:radio label="I prefer not to respond" id="" value="i_prefer_not_to_respond"/>
 </cml:radios>
-<cml:text label="If you answered 'Other' in the previous question, please decribe the place where you located now below."/>
+<cml:text label="If you answered 'Other' in the previous question, please describe the place where you located now below."/>
 <cml:radios label="Which input device are you using now?" class="" id="" validates="required">
   <cml:radio label="Laptop keyboard" id="" value="laptop_keyboard"/>
   <cml:radio label="Desktop keyboard" id="" value="desktop_keyboard"/>
@@ -32,7 +32,7 @@
   <cml:radio label="Other" id="" value="other"/>
   <cml:radio label="I prefer not to respond" id="" value="i_prefer_not_to_respond"/>
 </cml:radios>
-<cml:text label="If you answered 'Other' in the previous question, please decribe your input device below."/>
+<cml:text label="If you answered 'Other' in the previous question, please describe your input device below."/>
 <cml:text label="At which age did you obtain your first license for driving a car or motorcycle?" class="" validates="positiveInteger"/>
 <cml:radios label="What is your primary mode of transportation" class="" validates="required">
   <cml:radio label="Private vehicle" value="private_vehicle"/>
@@ -175,17 +175,16 @@
   <cml:radio label="Not at all." value="a2"/>
 </cml:radios>
 <p class="header">
-  <strong>Experiment to measure willingness to cross in front of an automated vehicle</strong>
-  In this experiment you will see multiple images of a vehicle approaching. You will be asked to leave Appen to participate in the experiment. You will need to open the link below. Do not close this tab. In the end of the experiment you will be given a code to input in the next question on this tab. Please take a note of the code. Without the code, you will not be able to receive money for your participation. All images will be downloaded before the start of the experiment. It may take a few minutes. Please do not close your browser during that time.
+  <strong>Experiment to measure clarity of textual external Human Machine Interfaces for automated vehicles</strong>
+  In this experiment, you will see multiple images of a vehicle with a textual message on the display on the front bumper. You will be asked to leave Appen to participate in the experiment. You will need to open the link below. Do not close this tab. At the end of the experiment, you will be given a code to input in the next question on this tab. Please take a note of the code. Without the code, you will not be able to receive money for your participation. All images will be downloaded before the start of the experiment. It may take a few minutes. Please do not close your browser during that time.
   <br/>
 </p>
 <p class="header2">Open 
   <strong>
     <a target="_blank" href="https://text-crowdsourced.herokuapp.com">this link</a>
-  </strong> to start experiment.
+  </strong> to start the experiment.
 </p>
 <cml:text label="Type the code that you received at the end of the experiment." class="" validates="required regex" data-validates-regex="^M2\d+\s?RL\d+\s?8M\s?$" data-validates-regex-message="Please enter the correct code to receive your money."/>
-<cml:textarea label="In the experiment, the car sometimes steered to the left or right. Why did the car do that? Please elaborate." class="" validates="required"/>
 
 <p class="header">
   <strong>Miscellaneous questions</strong>

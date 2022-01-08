@@ -265,7 +265,7 @@ var image_stimuli = []; // blocks with videos
 // define instructions block
 var instructions_block = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div class="jumbotron jumbotron-fluid" style="text-align: left;"><div class="container"><h1 class="display-4">Instructions</h1><p class="lead">The purpose of this experiment is to determine the intuitiveness of various text messages presented on the front bumper of an automated vehicle. In the following images, you will see an automated car that is approaching you. The car has a large text message on its front bumper.</p><p class="lead">You will view ' + n_images_per_participant * n_images_repeat + ' images. For each image you will need to imagine that you are a pedestrian and that an automated car is approaching you. You will need to answer one question by moving a slider. To advance to the next image, the slider needs to be moved.</p><p class="lead">The window of your browser should be at least 1300px wide and 800px tall.</p><hr><p>Press \'C\' to proceed to the first image.</p></div></div>',
+    stimulus: '<div class="jumbotron jumbotron-fluid" style="text-align: left;"><div class="container"><h1 class="display-4">Instructions</h1><p class="lead">The purpose of this experiment is to determine the clarity of various text messages for an automated vehicle. In the following images, you will see an automated car that is approaching you. The car has a display with a textual message on its front bumper.</p><p class="lead">You will view ' + n_images_per_participant * n_images_repeat + ' images. For each image you will need to imagine that you are a pedestrian and that an automated car is approaching you. You will need to answer one question by moving a slider. To advance to the next image, the slider needs to be moved.</p><p class="lead">The window of your browser should be at least 1300px wide and 800px tall.</p><hr><p>Press \'C\' to proceed to the first image.</p></div></div>',
     choices: ['C'],
     data: {
         browser_name: br_name,
@@ -307,7 +307,6 @@ var image_block_slider = {
     timeline: image_stimuli,
     labels: ['<div class="slider-tick">|<br>I would certainly not cross</div>', '<div class="slider-tick">|<br>I would probably not cross</div>', '<div class="slider-tick">|<br>I am not sure</div>', '<div class="slider-tick">|<br>I would probably cross</div>', '<div class="slider-tick">|<br>I would certainly cross</div>'],
     slider_width: 1000,
-    // labels: ['Not intuitive at all', 'Completely intuitive'],
     prompt: "<p style='width: 1000px'><strong>Would you cross the road?</strong></p>",
     require_movement: true,
     // response_ends_trial: true,
