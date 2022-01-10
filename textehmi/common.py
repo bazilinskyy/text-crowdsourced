@@ -115,3 +115,10 @@ def load_from_p(file, desription_data='data'):
     logger.info('Loaded ' + desription_data + ' from pickle file {}.',
                 file)
     return data
+
+
+def is_nan(num):
+    """
+    Check if value is nan.
+    """
+    return num != num

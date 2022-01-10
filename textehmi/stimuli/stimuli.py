@@ -32,12 +32,17 @@ class Stimuli:
         # load image with eHMI
         for index, row in df.iterrows():
             logger.info('Creating stimulus for message {}.', row['text'])
+            # skip nan
+            if te.common.is_nan(row['text']):
+                logger.error('nan value detected.')
+                continue
             try:
                 overlay = Image.open(os.path.join(te.settings.root_dir,
                                                   'textehmi',
                                                   'stimuli',
                                                   'base',
-                                                  str(row['id']) + '.png'))
+                                                  str(int(row['id']))
+                                                  + '.png'))
             except FileNotFoundError:
                 logger.error('Base file for stimulus {} not found.', row['id'])
                 # skip to next stimulus
@@ -51,7 +56,7 @@ class Stimuli:
             background = Image.open(os.path.join(te.settings.root_dir,
                                                  'textehmi',
                                                  'stimuli',
-                                                 'bg.png'))
+                                                 'bg.jpg'))
             # convert to RGBA
             background = background.convert('RGBA')
             # choose coordinates of eHMI on car
@@ -73,5 +78,5 @@ class Stimuli:
             background = background.convert('RGB')
             # save as new file
             background.save(os.path.join(te.common.get_configs('path_stimuli'),
-                                         'image_' + str(row['id']) +
+                                         'image_' + str(int(row['id'])) +
                                          '.jpg'))
