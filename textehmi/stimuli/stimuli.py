@@ -56,13 +56,13 @@ class Stimuli:
             background = background.convert('RGBA')
             # choose coordinates of eHMI on car
             if row['rows'] == 1:
-                coords = (420, 375)
+                coords = (410, 375)
             elif row['rows'] == 2:
-                coords = (420, 350)
+                coords = (410, 350)
             elif row['rows'] == 3:
-                coords = (420, 375)
+                coords = (410, 325)
             elif row['rows'] == 4:
-                coords = (420, 305)
+                coords = (410, 300)
             else:
                 logger.error('Unkown value of {} rows for stimulus {}.',
                              row['rows'],
