@@ -68,6 +68,8 @@ class Stimuli:
                 coords = (410, 325)
             elif row['rows'] == 4:
                 coords = (410, 300)
+            elif row['rows'] == 5:
+                coords = (410, 275)
             else:
                 logger.error('Unkown value of {} rows for stimulus {}.',
                              row['rows'],
