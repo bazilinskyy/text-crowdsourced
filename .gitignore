@@ -126,3 +126,9 @@ secret
 # Pickle files
 textehmi/analysis/*.p
 textehmi/*.p
+
+# Data files
+textehmi/analysis/*.csv
+textehmi/analysis/*.xls
+textehmi/analysis/*.xlsx
+textehmi/analysis/*.json
