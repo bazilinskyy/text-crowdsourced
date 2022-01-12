@@ -7,7 +7,6 @@ clear all;close all;clc; %#ok<*CLALL>
 N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
 
-
 %% ************************************************************************
 %% Load config
 %% ************************************************************************
@@ -142,7 +141,7 @@ for i=181:227 % Spanish eHMIs
     scatter2=scatter(RPoMedUS(i),RPoMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
     scatter2.MarkerFaceAlpha = .3;
 end
-legend('eHMIs in English','eHMIs in English','autoupdate','off','location','northwest')
+legend('eHMIs in English','eHMIs in Spanish','autoupdate','off','location','northwest')
 plot([0 100],[0 100],'b--')
 xlabel('Median willingness to cross - participants from USA');
 ylabel('Median willingness to cross - participants from Venezuela');
@@ -164,7 +163,7 @@ for i=181:227 % Spanish texts
     scatter2=scatter(RToMedUS(i),RToMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
     scatter2.MarkerFaceAlpha = .3;
 end
-legend('English texts','Spanish texts','autoupdate','off','location','northwest')
+legend('eHMIs in English','eHMIs in Spanish','autoupdate','off','location','northwest')
 plot([0 100],[0 100],'b--')
 xlabel('Median response time - Participants from USA');
 ylabel('Median response time - Participants from Venezuela');
