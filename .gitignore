@@ -134,8 +134,3 @@ textehmi/analysis/*.xlsx
 textehmi/analysis/*.json
 textehmi/analysis/*.asv
 textehmi/analysis/*.mat
-
-# Add empty folder
-*
-!_output*
-!.gitignore
