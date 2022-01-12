@@ -10,7 +10,7 @@ Code for creation of stimuli is writtenin Python. The project is tested with Pyt
 Code for analysis is written in MATLAB. No configuration is needed. The project is tested with MATLAB 2021b.
 
 ### Visualisation
-Visualisations of gazes, heatmaps and histograms and  are saved in `text-crowdsourced/_output`.
+Figures are saved in `text-crowdsourced/_output`.
 
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
 Mediam willingness to cross.
