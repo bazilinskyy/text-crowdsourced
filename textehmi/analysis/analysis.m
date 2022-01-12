@@ -106,8 +106,8 @@ set(h,'FontSize',8,'Fontname','Arial')
 % disp(round(RPoMedSorted(1:4)))
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_figures filesep 'median-cross'], 'epsc')
-export_figure(gcf, [config.path_figures_readme filesep 'median-cross'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
 
 %% SD willingness to cross - Please cross
 [RPoSTDSorted,bs]=sort(RPoSTD);
@@ -132,8 +132,8 @@ set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 %disp('Top 15 lowest - SD willingness to cross')
 %disp([eHMI_text_STDSorted(1:15,:) round(RPoSTDSorted(1:15))])
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'epsc')
-export_figure(gcf, [config.path_figures_readme filesep 'sd-cross'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 
 %% Slider rating USA/VEN
 figure;hold on;grid on
@@ -154,8 +154,8 @@ set(h,'FontSize',20,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01],'xlim',[-1 101],'ylim',[-1 101])
 axis equal
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'epsc')
-export_figure(gcf, [config.path_figures_readme filesep 'median-cross-usa-ven'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
 
 %% Response time USA/VEN
 figure;hold on;grid on
@@ -176,8 +176,8 @@ set(h,'FontSize',20,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 axis equal
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'epsc')
-export_figure(gcf, [config.path_figures_readme filesep 'response-time-usa-ven'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
 
 %% ************************************************************************
 %% Export of overview to csv
