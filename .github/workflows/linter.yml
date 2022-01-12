@@ -54,5 +54,6 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_INCLUDE: .*textehmi/.*
+          FILTER_REGEX_EXCLUDE: .*textehmi/analysis/.*
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_PYTHON_ISORT: false
