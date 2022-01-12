@@ -7,6 +7,7 @@ clear all;close all;clc; %#ok<*CLALL>
 N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
 
+
 %% ************************************************************************
 %% Load config
 %% ************************************************************************
@@ -61,6 +62,7 @@ RT = X(:, 26:105);  % amount of time used to press the key
 % RT(:,1)=[];  % remove the first unneded column
 RP = X(:, 106:185);  % response from the slider
 imageid = X(:,186:265);  % image ids as shown
+eHMI_text=mapping(:,2);  % labels with eHMIs
 
 %% Order based on image number
 [RPo,RTo]=deal(NaN(size(RP,1),N_STIMULI));
@@ -76,19 +78,14 @@ opengl hardware
 for i=1:size(RPo,2)
     RPoMed(i)=nanmedian(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal medians sorted on SD
     RPoSTD(i)=nanstd(RPo(:,i));
-    
     RPoMedVE(i)=nanmean(RPo(contains(Country,'VE'),i)); % mean for participants from VEN
     RPoMedUS(i)=nanmean(RPo(contains(Country,'US'),i)); % mean for participants from USA
     RToMedVE(i)=nanmedian(RTo(contains(Country,'VE'),i)); % median RT participants from VEN
-    RToMedUS(i)=nanmedian(RTo(contains(Country,'US'),i)); % median RT participants from USA
-    
+    RToMedUS(i)=nanmedian(RTo(contains(Country,'US'),i)); % median RT participants from USA  
 end
 [RPoMedSorted,b]=sort(RPoMed);
-
 % build xticks
-eHMI_text=mapping(:,2);
 eHMI_text_MedSorted=char(eHMI_text{b,:});
-
 figure;
 hold on;
 grid on;
@@ -108,11 +105,14 @@ set(h,'FontSize',8,'Fontname','Arial')
 % disp('Top 5 lowest - median willingness to cross')
 % disp(round(RPoMedSorted(1:4)))
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_figures filesep 'median-cross'], 'epsc')
+export_figure(gcf, [config.path_figures_readme filesep 'median-cross'], 'jpg')
 
 %% SD willingness to cross - Please cross
 [RPoSTDSorted,bs]=sort(RPoSTD);
-eHMI_text=mapping(:,2);
-eHMI_text_STDSorted=char(eHMI_text(bs,:));
+% build xticks
+eHMI_text_STDSorted=char(eHMI_text{bs,:});
 figure;
 hold on;
 box on;
@@ -120,7 +120,7 @@ for i=1:N_STIMULI % loop over colors
     bar(i,RPoSTDSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
 end
 set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
-set(gca,'xticklabel',eHMI_text)
+set(gca,'xticklabel',eHMI_text_STDSorted)
 xlabel('eHMI')
 ylabel('\it{SD}\rm willingness to cross (%)')
 h=findobj('FontName','Helvetica');
@@ -131,33 +131,40 @@ set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 %disp(sortrows([eHMI_text_STDSorted(end-14:end,:) round(RPoSTDSorted(end-14:end))],-4))
 %disp('Top 15 lowest - SD willingness to cross')
 %disp([eHMI_text_STDSorted(1:15,:) round(RPoSTDSorted(1:15))])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'epsc')
+export_figure(gcf, [config.path_figures_readme filesep 'sd-cross'], 'jpg')
 
 %% Slider rating USA/VEN
 figure;hold on;grid on
-for i=1:180 % English texts
-    scatter1=scatter(RPoMedUS(i),RPoMedVE(i),length(char(eHMI_text(i)))*20,'markerfacecolor','k','markeredgecolor','none');
+for i=1:180 % English eHMIs
+    scatter1=scatter(RPoMedUS(i),RPoMedVE(i),mapping{i,3}*20,'markerfacecolor','k','markeredgecolor','none');
     scatter1.MarkerFaceAlpha = .3;
 end
-for i=181:227 % Spanish texts
-    scatter2=scatter(RPoMedUS(i),RPoMedVE(i),length(char(eHMI_text(i)))*20,'markerfacecolor','r','markeredgecolor','none');
+for i=181:227 % Spanish eHMIs
+    scatter2=scatter(RPoMedUS(i),RPoMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
     scatter2.MarkerFaceAlpha = .3;
 end
-legend('English texts','Spanish texts','autoupdate','off','location','northwest')
+legend('eHMIs in English','eHMIs in English','autoupdate','off','location','northwest')
 plot([0 100],[0 100],'b--')
-xlabel('Mean rating - Participants from USA');
-ylabel('Mean rating - Participants from Venezuela');
+xlabel('Median willingness to cross - participants from USA');
+ylabel('Median willingness to cross - participants from Venezuela');
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',20,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01],'xlim',[-1 101],'ylim',[-1 101])
 axis equal
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures_readme filesep 'median-cross-usa-ven'], 'jpg')
+
 %% Response time USA/VEN
 figure;hold on;grid on
 for i=1:180 % English texts
-    scatter1=scatter(RToMedUS(i),RToMedVE(i),length(char(eHMI_text(i)))*20,'markerfacecolor','k','markeredgecolor','none');
+    scatter1=scatter(RToMedUS(i),RToMedVE(i),mapping{i,3}*20,'markerfacecolor','k','markeredgecolor','none');
     scatter1.MarkerFaceAlpha = .3;
 end
 for i=181:227 % Spanish texts
-    scatter2=scatter(RToMedUS(i),RToMedVE(i),length(char(eHMI_text(i)))*20,'markerfacecolor','r','markeredgecolor','none');
+    scatter2=scatter(RToMedUS(i),RToMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
     scatter2.MarkerFaceAlpha = .3;
 end
 legend('English texts','Spanish texts','autoupdate','off','location','northwest')
@@ -168,11 +175,14 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',20,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 axis equal
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures_readme filesep 'response-time-usa-ven'], 'jpg')
 
 %% ************************************************************************
 %% Export of overview to csv
 %% ************************************************************************
-m = [mapping(:,2); nanmedian(RPo(:)); nanstd(RPo(:))]';
-m_int = sortrows(m, 1, 'descend');  % sort by willingness to cross score
-m_std = sortrows(m, 2, 'descend');  % sort by std
-writecell([m m_int m_std],'ehmis.csv');
+% m = [mapping(:,2); nanmedian(RPo(:)); nanstd(RPo(:))]';
+% m_int = sortrows(m, 1, 'descend');  % sort by willingness to cross score
+% m_std = sortrows(m, 2, 'descend');  % sort by std
+% writecell([m m_int m_std],'ehmis.csv');
