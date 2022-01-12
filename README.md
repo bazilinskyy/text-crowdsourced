@@ -29,6 +29,6 @@ Configuration of analysis needs to be defined in `text-crowdsourced/config`. Ple
 * `file_heroku`: files with data from heroku.
 * `file_appen`: file with data from appen.
 * `path_stimuli`: path with stimuli.
-* `mapping_stimuli`: csv file with mapping of stimuli.
+* `mapping`: csv file with mapping of stimuli.
 * `path_figures`: path for outputting figures in the EPS format.
 * `path_figures_readme`: path for outputting figures in the JPG format.

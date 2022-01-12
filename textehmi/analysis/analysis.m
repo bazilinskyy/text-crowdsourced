@@ -49,9 +49,8 @@ appen_indices = [16,... % 1. Instructions understood
                                   config.file_heroku, ...
                                   N_STIMULI);
 
-%% Mapping of eHMIs
-mapping=readtable(config.mapping_stimuli);  % file with mapping
-% mapping2=readtable('mapping.csv','ReadVariableNames',1);
+%% Rewad mapping of eHMIs
+mapping=readtable(config.mapping);
 
 %% ************************************************************************
 %% OUTPUT
