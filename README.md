@@ -28,7 +28,6 @@ Response time for participants from USA and Venezuela.
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:
 * `file_heroku`: files with data from heroku.
 * `file_appen`: file with data from appen.
-* `appen_range`: range of data in `file_appen`.
 * `path_stimuli`: path with stimuli.
 * `mapping_stimuli`: csv file with mapping of stimuli.
 * `path_figures`: path for outputting figures in the EPS format.

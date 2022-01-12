@@ -2,11 +2,14 @@
 %% ************************************************************************
 %% Process appen and heroku data for the experiment
 %% ************************************************************************
-function [X, Country] = process_experiment(appen_file, appen_range, appen_indices, heroku_file, N_STIMULI, N_PERSON)
+function [X, Country] = process_experiment(appen_file, appen_indices, heroku_file, N_STIMULI)
     %% Load data
-    raw_heroku = readtable(heroku_file,'ReadVariableNames',0); %%#ok<NASGU> % Import csv file with keypress data
-%     raw_heroku = readmatrix(heroku_file,'outputtype','string','NumHeaderLines',0);
-    [~,~,raw_appen] = xlsread(appen_file, appen_range);  % Import Excel file with appen data (crowd study)
+    % Import csv file with keypress data
+    raw_heroku = readtable(heroku_file,'ReadVariableNames',0);
+    % Import csv file with appen data (crowdsourced study)
+    % TODO: fix warning abuot datetime format
+    raw_appen = readtable(appen_file, 'ReadVariableNames', false);
+    raw_appen = table2cell(raw_appen);  % convert to cell array for ease of checking
     %% Filter appen data
     X=NaN(size(raw_appen,1),267);
     disp(['Number of respondents = ' num2str(size(raw_appen, 1))])
