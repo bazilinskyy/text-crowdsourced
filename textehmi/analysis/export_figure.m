@@ -9,7 +9,7 @@
 % format: format of file to be saved.
 % maximise: default argument to maxmise figure or not.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function export_eps(figure, filename, format, maximise)
+function export_figure(figure, filename, format, maximise)
     % way to pass default arguments in matlab...
     if nargin < 4
         maximise = true;
