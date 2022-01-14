@@ -1,9 +1,9 @@
-# Analysing crossing behaviour of a pedestrian with an automated car and other pedestrian in the traffic scence
+# Analysing crossing behaviour of a pedestrian with an automated car and other pedestrian in the traffic scene
 
 This project defines a framework for the analysis of crossing behaviour in the interaction between a pedestrian and an automated vehicle with a textual eHMI using a crowdsourcing approach. The jsPsych framework is used to for the frontend. In the description below, it is assumed that the repo is stored in the folder `text-crowdsourced`. Terminal commands lower assume macOS.
 
 ## Setup
-Code for creation of stimuli is writtenin Python. The project is tested with Python 3.8.5. To setup the environment run these two commands in a parent folder of the downloaded repository (replace `/` with `\` and possibly add `--user` if on Windows:
+Code for creation of stimuli is written in Python. The project is tested with Python 3.8.5. To setup the environment run these two commands in a parent folder of the downloaded repository (replace `/` with `\` and possibly add `--user` if on Windows:
 - `pip install -e text-crowdsourced` will setup the project as a package accessible in the environment.
 - `pip install -r text-crowdsourced/requirements.txt` will install required packages.
 
@@ -13,10 +13,13 @@ Code for analysis is written in MATLAB. No configuration is needed. The project 
 Figures are saved in `text-crowdsourced/_output`.
 
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
-Mediam willingness to cross.
+Median willingness to cross.
+
+![mean willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/mean-cross.jpg?raw=true)
+Mean willingness to cross.
 
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
-Mediam willingness to cross.
+SD of willingness to cross.
 
 ![median willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-usa-ven.jpg?raw=true)
 Median willingness to cross for participants from USA and Venezuela.

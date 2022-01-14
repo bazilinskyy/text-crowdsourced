@@ -105,6 +105,43 @@ set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
 export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
 
+%% Mean willingness to cross
+opengl hardware
+[RPoMean,RPoSTD,RPoMeanVE,RPoMeanUS,RToMeanVE,RToMeanUS,o,NN]=deal(NaN(N_STIMULI,1));
+for i=1:size(RPo,2)
+    RPoMean(i)=nanmean(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal mean sorted on SD
+    RPoSTD(i)=nanstd(RPo(:,i));
+    RPoMeanVE(i)=nanmean(RPo(contains(Country,'VE'),i)); % mean for participants from VEN
+    RPoMeanUS(i)=nanmean(RPo(contains(Country,'US'),i)); % mean for participants from USA
+    RToMeanVE(i)=nanmean(RTo(contains(Country,'VE'),i)); % mean RT participants from VEN
+    RToMeanUS(i)=nanmean(RTo(contains(Country,'US'),i)); % mean RT participants from USA  
+end
+[RPoMeanSorted,b]=sort(RPoMean);
+% build xticks
+eHMI_text_MeanSorted=char(eHMI_text{b,:});
+figure;
+hold on;
+grid on;
+box on;
+for i=1:N_STIMULI % loop over colors
+    bar(i,1+RPoMeanSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_MeanSorted)
+xlabel('eHMI');
+ylabel('Mean willingness to cross (%)')
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',8,'Fontname','Arial')
+% display top and low
+% disp('Top 5 highest - median willingness to cross')
+% disp(round(RPoMedSorted(end-4:end)))
+% disp('Top 5 lowest - median willingness to cross')
+% disp(round(RPoMedSorted(1:4)))
+set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
+
 %% SD willingness to cross - Please cross
 [RPoSTDSorted,bs]=sort(RPoSTD);
 % build xticks
@@ -115,7 +152,7 @@ box on;
 for i=1:N_STIMULI % loop over colors
     bar(i,RPoSTDSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
 end
-set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 40],'xtick',[1:1:N_STIMULI])
 set(gca,'xticklabel',eHMI_text_STDSorted)
 xlabel('eHMI')
 ylabel('\it{SD}\rm willingness to cross (%)')
