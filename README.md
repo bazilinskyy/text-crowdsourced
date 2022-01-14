@@ -19,7 +19,7 @@ Median willingness to cross.
 Mean willingness to cross.
 
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
-SD of willingness to cross.
+Standard deviation of willingness to cross.
 
 ![median willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-usa-ven.jpg?raw=true)
 Median willingness to cross for participants from USA and Venezuela.
