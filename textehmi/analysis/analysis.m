@@ -170,21 +170,33 @@ export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 
 %% Slider rating USA/VEN
 figure;hold on;grid on
+clear h; % empty h object to store colour for the legend
 for i=1:180 % English eHMIs
-    scatter1=scatter(RPoMedUS(i),RPoMedVE(i),mapping{i,3}*20,'markerfacecolor','k','markeredgecolor','none');
-    scatter1.MarkerFaceAlpha = .3;
+    scatter1 = scatter(RPoMedUS(i), RPoMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'k', ...
+                       'markeredgecolor', 'none');
+    scatter1.MarkerFaceAlpha = 0.3;
+    h(1) = scatter1(1); % store 1st object for the colour in the legend
 end
 for i=181:227 % Spanish eHMIs
-    scatter2=scatter(RPoMedUS(i),RPoMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
-    scatter2.MarkerFaceAlpha = .3;
+    scatter2 = scatter(RPoMedUS(i), RPoMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'r', ...
+                       'markeredgecolor', 'none');
+    scatter2.MarkerFaceAlpha = 0.3;
+    h(2) = scatter2(1); % store 1st object for the colour in the legend
 end
-legend('eHMIs in English','eHMIs in Spanish','autoupdate','off','location','northwest')
+legend(h, {'eHMIs in English' 'eHMIs in Spanish'}, ...
+           'autoupdate', 'off', ...
+           'location', 'northwest')
 plot([0 100],[0 100],'b--')
 xlabel('Median willingness to cross - participants from USA');
 ylabel('Median willingness to cross - participants from Venezuela');
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',20,'Fontname','Arial')
-set(gca,'LooseInset',[0.01 0.01 0.01 0.01],'xlim',[-1 101],'ylim',[-1 101])
+set(gca, ...
+    'LooseInset', [0.01 0.01 0.01 0.01], ...
+    'xlim',[0 101], ...
+    'ylim',[0 101])
 axis equal
 % maximise and export as eps and jpg (for readme)
 export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
@@ -192,21 +204,33 @@ export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
 
 %% Response time USA/VEN
 figure;hold on;grid on
-for i=1:180 % English texts
-    scatter1=scatter(RToMedUS(i),RToMedVE(i),mapping{i,3}*20,'markerfacecolor','k','markeredgecolor','none');
-    scatter1.MarkerFaceAlpha = .3;
+clear h; % empty h object to store colour for the legend
+for i=1:180 % English eHMIs
+    scatter1 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'k', ...
+                       'markeredgecolor', 'none');
+    scatter1.MarkerFaceAlpha = 0.3;
+    h(1) = scatter1(1); % store 1st object for the colour in the legend
 end
-for i=181:227 % Spanish texts
-    scatter2=scatter(RToMedUS(i),RToMedVE(i),mapping{i,3}*20,'markerfacecolor','r','markeredgecolor','none');
-    scatter2.MarkerFaceAlpha = .3;
+for i=181:227 % Spanish eHMIs
+    scatter2 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'r', ...
+                       'markeredgecolor', 'none');
+    scatter2.MarkerFaceAlpha = 0.3;
+    h(2) = scatter2(1); % store 1st object for the colour in the legend
 end
-legend('eHMIs in English','eHMIs in Spanish','autoupdate','off','location','northwest')
+legend(h, {'eHMIs in English' 'eHMIs in Spanish'}, ...
+           'autoupdate', 'off', ...
+           'location', 'northwest')
 plot([0 100],[0 100],'b--')
 xlabel('Median response time - Participants from USA');
 ylabel('Median response time - Participants from Venezuela');
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',20,'Fontname','Arial')
-set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+set(gca, ...
+    'LooseInset', [0.01 0.01 0.01 0.01], ...
+    'xlim', [2000 10000], ...
+    'ylim', [3000 10000])
 axis equal
 % maximise and export as eps and jpg (for readme)
 export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
