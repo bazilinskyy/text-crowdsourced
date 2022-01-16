@@ -9,6 +9,7 @@ N_PERSON = 80;    % number of stimuli per person
 STEP_COLOUR = 5;  % step for traversing over colourmap
 COLOUR_SAME_EHMI = false;  % flag for colouring eHMI in ES/EN on figures
                            % with all eHMI
+SAVE_FIGURES = true;       % flag for saving figures as EPS and JPG files
 
 %% ************************************************************************
 %% Load config
@@ -16,49 +17,48 @@ COLOUR_SAME_EHMI = false;  % flag for colouring eHMI in ES/EN on figures
 config = jsondecode(fileread('../../config'));
 
 %% ************************************************************************
-%% Process appen and heroku data from experiment
+%% Process data
 %% ************************************************************************
 % indices to traverse in appen data
 appen_indices = [16,... % 1. Instructions understood
-    37,... % 2. Gender
-    36,... % 3. Age
-    14,... % 4. Age of obtaining driver's license
-    40,... % 5. Primary mode of transportation
-    31,... % 6. How many times in past 12 months did you drive a vehicle
-    13,... % 7. Mileage
-    17,... % 8. Number of accidents
-    9,...  % Country
-    18,... % 9. DBQ1
-    19,... % 10. DBQ1
-    20,... % 11. DBQ2
-    21,... % 12. DBQ3
-    22,... % 13. DBQ4
-    23,... % 14. DBQ5
-    24,... % 15. DBQ6
-    38,... % 16. Knowledge of English
-    39,... % 17. Knowledge of Spanish
-    15,... % 18. English 1
-    35,... % 19. English 2
-    25,... % 20. English 3
-    26,... % 21. English 4
-    33,... % 22. English 5
-    4,...  % 23. Start
-    2,...  % 24. End
-    8,...  % 321. Worker id
-    34];   % worker_code
+                 37,... % 2. Gender
+                 36,... % 3. Age
+                 14,... % 4. Age of obtaining driver's license
+                 40,... % 5. Primary mode of transportation
+                 31,... % 6. How many times in past 12 months did you drive a vehicle
+                 13,... % 7. Mileage
+                 17,... % 8. Number of accidents
+                 9,...  % Country
+                 18,... % 9. DBQ1
+                 19,... % 10. DBQ1
+                 20,... % 11. DBQ2
+                 21,... % 12. DBQ3
+                 22,... % 13. DBQ4
+                 23,... % 14. DBQ5
+                 24,... % 15. DBQ6
+                 38,... % 16. Knowledge of English
+                 39,... % 17. Knowledge of Spanish
+                 15,... % 18. English 1
+                 35,... % 19. English 2
+                 25,... % 20. English 3
+                 26,... % 21. English 4
+                 33,... % 22. English 5
+                 4,...  % 23. Start
+                 2,...  % 24. End
+                 8,...  % 321. Worker id
+                 34];   % worker_code
 [X, Country] = process_experiment(config.file_appen, ...
-    appen_indices, ...
-    config.file_heroku, ...
-    N_STIMULI);
+                                  appen_indices, ...
+                                  config.file_heroku, ...
+                                  N_STIMULI);
 
-%% Rewad mapping of eHMIs
-mapping=readtable(config.mapping);
+%% Read mapping of eHMIs
+mapping = readtable(config.mapping);
 
 %% ************************************************************************
 %% OUTPUT
 %% ************************************************************************
 RT = X(:, 26:105);  % amount of time used to press the key
-% RT(:,1)=[];  % remove the first unneded column
 RP = X(:, 106:185);  % response from the slider
 imageid = X(:,186:265);  % image ids as shown
 eHMI_text=mapping(:,2);  % labels with eHMIs
@@ -126,8 +126,10 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
+end
 
 %% Mean willingness to cross
 opengl hardware
@@ -184,8 +186,10 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
+end
 
 %% SD willingness to cross - Please cross
 [RPoSTDSorted,bs]=sort(RPoSTD);
@@ -231,8 +235,10 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
+end
 
 %% Slider rating USA/VEN
 figure;hold on;grid on
@@ -265,8 +271,10 @@ set(gca, ...
     'ylim',[0 101])
 axis equal
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
+end
 
 %% Response time USA/VEN
 figure;hold on;grid on
@@ -299,8 +307,10 @@ set(gca, ...
     'ylim', [3000 10000])
 axis equal
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
+end
 
 %% Response time over number of characters
 figure;hold on;grid on
@@ -322,9 +332,10 @@ set(gca, ...
     'ylim', [2000 10000])
 %axis equal
 % maximise and export as eps and jpg (for readme)
-export_figure(gcf, [config.path_output filesep 'response-time-num-chars'], 'epsc')
-export_figure(gcf, [config.path_figures filesep 'response-time-num-chars'], 'jpg')
-
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'response-time-num-chars'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'response-time-num-chars'], 'jpg')
+end
 
 %% Scatter plot for Spanish and corresponding English eHMI texts
 % assign colours to pairs of EN and ES eHMIs
