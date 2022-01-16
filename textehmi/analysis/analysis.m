@@ -86,8 +86,32 @@ figure;
 hold on;
 grid on;
 box on;
-for i=1:N_STIMULI % loop over colors
-    bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+cmap = colormap(jet); % choose colormap
+counter_colour = 1;  % counter for assigned colours
+for i=1:N_STIMULI % loop over eHMIs
+    % get index in cell array
+    ehmi = strtrim(eHMI_text_MedSorted(i,:));
+    % check if there is Spanish translation
+    if find(ismember(mapping{:,10}, ehmi))
+        index_es = find(ismember(mapping{:,10}, ehmi));
+        ehmi_es = char(mapping{index_es,2});
+        % find index of ES eHMI
+        for j=1:N_STIMULI % loop over eHMIs
+            ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+            if strcmp(ehmi_es, ehmi_tick_trimmed)
+                i_es = j;
+                break;
+            end
+        end
+        % set colour
+        set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+        set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+        counter_colour = counter_colour + 5;
+    end
 end
 set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
 set(gca,'xticklabel',eHMI_text_MedSorted)
@@ -95,11 +119,7 @@ xlabel('eHMI');
 ylabel('Median willingness to cross (%)')
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
-% display top and low
-% disp('Top 5 highest - median willingness to cross')
-% disp(round(RPoMedSorted(end-4:end)))
-% disp('Top 5 lowest - median willingness to cross')
-% disp(round(RPoMedSorted(1:4)))
+% set
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
 export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
@@ -123,8 +143,32 @@ figure;
 hold on;
 grid on;
 box on;
-for i=1:N_STIMULI % loop over colors
-    bar(i,1+RPoMeanSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,1+RPoMeanSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+cmap = colormap(jet); % choose colormap
+counter_colour = 1;  % counter for assigned colours
+for i=1:N_STIMULI % loop over eHMIs
+    % get index in cell array
+    ehmi = strtrim(eHMI_text_MedSorted(i,:));
+    % check if there is Spanish translation
+    if find(ismember(mapping{:,10}, ehmi))
+        index_es = find(ismember(mapping{:,10}, ehmi));
+        ehmi_es = char(mapping{index_es,2});
+        % find index of ES eHMI
+        for j=1:N_STIMULI % loop over eHMIs
+            ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+            if strcmp(ehmi_es, ehmi_tick_trimmed)
+                i_es = j;
+                break;
+            end
+        end
+        % set colour
+        set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+        set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+        counter_colour = counter_colour + 5;
+    end
 end
 set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
 set(gca,'xticklabel',eHMI_text_MeanSorted)
@@ -149,8 +193,32 @@ eHMI_text_STDSorted=char(eHMI_text{bs,:});
 figure;
 hold on;
 box on;
-for i=1:N_STIMULI % loop over colors
-    bar(i,RPoSTDSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,RPoSTDSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+cmap = colormap(jet); % choose colormap
+counter_colour = 1;  % counter for assigned colours
+for i=1:N_STIMULI % loop over eHMIs
+    % get index in cell array
+    ehmi = strtrim(eHMI_text_MedSorted(i,:));
+    % check if there is Spanish translation
+    if find(ismember(mapping{:,10}, ehmi))
+        index_es = find(ismember(mapping{:,10}, ehmi));
+        ehmi_es = char(mapping{index_es,2});
+        % find index of ES eHMI
+        for j=1:N_STIMULI % loop over eHMIs
+            ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+            if strcmp(ehmi_es, ehmi_tick_trimmed)
+                i_es = j;
+                break;
+            end
+        end
+        % set colour
+        set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+        set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+        counter_colour = counter_colour + 5;
+    end
 end
 set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 40],'xtick',[1:1:N_STIMULI])
 set(gca,'xticklabel',eHMI_text_STDSorted)
