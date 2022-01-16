@@ -176,11 +176,6 @@ xlabel('eHMI');
 ylabel('Mean willingness to cross (%)')
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
-% display top and low
-% disp('Top 5 highest - median willingness to cross')
-% disp(round(RPoMedSorted(end-4:end)))
-% disp('Top 5 lowest - median willingness to cross')
-% disp(round(RPoMedSorted(1:4)))
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
 export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
@@ -227,11 +222,6 @@ ylabel('\it{SD}\rm willingness to cross (%)')
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
-% display top and low
-%disp('Top 15 highest - SD willingness to cross')
-%disp(sortrows([eHMI_text_STDSorted(end-14:end,:) round(RPoSTDSorted(end-14:end))],-4))
-%disp('Top 15 lowest - SD willingness to cross')
-%disp([eHMI_text_STDSorted(1:15,:) round(RPoSTDSorted(1:15))])
 % maximise and export as eps and jpg (for readme)
 export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
 export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
