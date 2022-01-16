@@ -21,11 +21,17 @@ Mean willingness to cross.
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
 Standard deviation of willingness to cross.
 
+![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
+Median willingness to cross for eHMIs presented in both English and Spanish.
+
 ![median willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-usa-ven.jpg?raw=true)
 Median willingness to cross for participants from USA and Venezuela.
 
 ![response willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-usa-ven.jpg?raw=true)
-Response time for participants from USA and Venezuela.
+Median response time for participants from USA and Venezuela.
+
+![response willingness over number of characters](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-num-chars.jpg?raw=true)
+Median willingness related to the length of the eHMI.
 
 ### Configuration of analysis
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:

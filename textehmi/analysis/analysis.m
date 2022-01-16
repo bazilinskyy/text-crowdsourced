@@ -6,6 +6,9 @@ clear all;close all;clc; %#ok<*CLALL>
 %% ************************************************************************
 N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
+STEP_COLOUR = 5;  % step for traversing over colourmap
+COLOUR_SAME_EHMI = false;  % flag for colouring eHMI in ES/EN on figures
+                           % with all eHMI
 
 %% ************************************************************************
 %% Load config
@@ -79,6 +82,158 @@ for i=1:size(RPo,2)
     RToMedVE(i)=nanmedian(RTo(contains(Country,'VE'),i)); % median RT participants from VEN
     RToMedUS(i)=nanmedian(RTo(contains(Country,'US'),i)); % median RT participants from USA
 end
+[RPoMedSorted,b]=sort(RPoMed);
+% build xticks
+eHMI_text_MedSorted=char(eHMI_text{b,:});
+figure;
+hold on;
+grid on;
+box on;
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+if COLOUR_SAME_EHMI
+    cmap = colormap(jet); % choose colormap
+    counter_colour = 1;  % counter for assigned colours
+    for i=1:N_STIMULI % loop over eHMIs
+        % get index in cell array
+        ehmi = strtrim(eHMI_text_MedSorted(i,:));
+        % check if there is Spanish translation
+        if find(ismember(mapping{:,10}, ehmi))
+            index_es = find(ismember(mapping{:,10}, ehmi));
+            ehmi_es = char(mapping{index_es,2});
+            % find index of ES eHMI
+            for j=1:N_STIMULI % loop over eHMIs
+                ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+                if strcmp(ehmi_es, ehmi_tick_trimmed)
+                    i_es = j;
+                    break;
+                end
+            end
+            % set colour
+            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+            counter_colour = counter_colour + 5;
+        end
+    end
+end
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_MedSorted)
+xlabel('eHMI');
+ylabel('Median willingness to cross (%)')
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',8,'Fontname','Arial')
+set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
+
+%% Mean willingness to cross
+opengl hardware
+[RPoMean,RPoSTD,RPoMeanVE,RPoMeanUS,RToMeanVE,RToMeanUS,o,NN]=deal(NaN(N_STIMULI,1));
+for i=1:size(RPo,2)
+    RPoMean(i)=nanmean(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal mean sorted on SD
+    RPoSTD(i)=nanstd(RPo(:,i));
+    RPoMeanVE(i)=nanmean(RPo(contains(Country,'VE'),i)); % mean for participants from VEN
+    RPoMeanUS(i)=nanmean(RPo(contains(Country,'US'),i)); % mean for participants from USA
+    RToMeanVE(i)=nanmean(RTo(contains(Country,'VE'),i)); % mean RT participants from VEN
+    RToMeanUS(i)=nanmean(RTo(contains(Country,'US'),i)); % mean RT participants from USA  
+end
+[RPoMeanSorted,b]=sort(RPoMean);
+% build xticks
+eHMI_text_MeanSorted=char(eHMI_text{b,:});
+figure;
+hold on;
+grid on;
+box on;
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,1+RPoMeanSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+if COLOUR_SAME_EHMI
+    cmap = colormap(jet); % choose colormap
+    counter_colour = 1;  % counter for assigned colours
+    for i=1:N_STIMULI % loop over eHMIs
+        % get index in cell array
+        ehmi = strtrim(eHMI_text_MeanSorted(i,:));
+        % check if there is Spanish translation
+        if find(ismember(mapping{:,10}, ehmi))
+            index_es = find(ismember(mapping{:,10}, ehmi));
+            ehmi_es = char(mapping{index_es,2});
+            % find index of ES eHMI
+            for j=1:N_STIMULI % loop over eHMIs
+                ehmi_tick_trimmed = strtrim(eHMI_text_MeanSorted(j,:));
+                if strcmp(ehmi_es, ehmi_tick_trimmed)
+                    i_es = j;
+                    break;
+                end
+            end
+            % set colour
+            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+            counter_colour = counter_colour + STEP_COLOUR;
+        end
+    end
+end
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_MeanSorted)
+xlabel('eHMI');
+ylabel('Mean willingness to cross (%)')
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',8,'Fontname','Arial')
+set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
+
+%% SD willingness to cross - Please cross
+[RPoSTDSorted,bs]=sort(RPoSTD);
+% build xticks
+eHMI_text_STDSorted=char(eHMI_text{bs,:});
+figure;
+hold on;
+box on;
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,RPoSTDSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+if COLOUR_SAME_EHMI
+    cmap = colormap(jet); % choose colormap
+    counter_colour = 1;  % counter for assigned colours
+    for i=1:N_STIMULI % loop over eHMIs
+        % get index in cell array
+        ehmi = strtrim(eHMI_text_STDSorted(i,:));
+        % check if there is Spanish translation
+        if find(ismember(mapping{:,10}, ehmi))
+            index_es = find(ismember(mapping{:,10}, ehmi));
+            ehmi_es = char(mapping{index_es,2});
+            % find index of ES eHMI
+            for j=1:N_STIMULI % loop over eHMIs
+                ehmi_tick_trimmed = strtrim(eHMI_text_STDSorted(j,:));
+                if strcmp(ehmi_es, ehmi_tick_trimmed)
+                    i_es = j;
+                    break;
+                end
+            end
+            % set colour
+            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+            counter_colour = counter_colour + STEP_COLOUR;
+        end
+    end
+end
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 40],'xtick',[1:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_STDSorted)
+xlabel('eHMI')
+ylabel('\it{SD}\rm willingness to cross (%)')
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',8,'Fontname','Arial')
+set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
+
 %% Slider rating USA/VEN
 figure;hold on;grid on
 clear h; % empty h object to store colour for the legend
@@ -110,10 +265,44 @@ set(gca, ...
     'ylim',[0 101])
 axis equal
 % maximise and export as eps and jpg (for readme)
-%export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
-%export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
 
 %% Response time USA/VEN
+figure;hold on;grid on
+clear h; % empty h object to store colour for the legend
+for i=1:180 % English eHMIs
+    scatter1 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'k', ...
+                       'markeredgecolor', 'none');
+    scatter1.MarkerFaceAlpha = 0.3;
+    h(1) = scatter1(1); % store 1st object for the colour in the legend
+end
+for i=181:227 % Spanish eHMIs
+    scatter2 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+                       'markerfacecolor', 'r', ...
+                       'markeredgecolor', 'none');
+    scatter2.MarkerFaceAlpha = 0.3;
+    h(2) = scatter2(1); % store 1st object for the colour in the legend
+end
+legend(h, {'eHMIs in English' 'eHMIs in Spanish'}, ...
+           'autoupdate', 'off', ...
+           'location', 'northwest')
+plot([0 100],[0 100],'b--')
+xlabel('Median response time - Participants from USA');
+ylabel('Median response time - Participants from Venezuela');
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',20,'Fontname','Arial')
+set(gca, ...
+    'LooseInset', [0.01 0.01 0.01 0.01], ...
+    'xlim', [2000 10000], ...
+    'ylim', [3000 10000])
+axis equal
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
+
+%% Response time over number of characters
 figure;hold on;grid on
 clear h; % empty h object to store colour for the legend
 for i=1:227 % English eHMIs
@@ -133,8 +322,8 @@ set(gca, ...
     'ylim', [2000 10000])
 %axis equal
 % maximise and export as eps and jpg (for readme)
-%export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
-%export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
+export_figure(gcf, [config.path_output filesep 'response-time-num-chars'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'response-time-num-chars'], 'jpg')
 
 
 %% Scatter plot for Spanish and corresponding English eHMI texts
@@ -163,6 +352,9 @@ ylabel('Mean willingness to cross - Spanish text');
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',20,'Fontname','Arial')
 set(gca, 'LooseInset', [0.01 0.01 0.01 0.01],'xlim',[0 100],'ylim',[0 100],'pos',[0.05 0.08 0.5 0.9])
+% maximise and export as eps and jpg (for readme)
+export_figure(gcf, [config.path_output filesep 'median-cross-en-es'], 'epsc')
+export_figure(gcf, [config.path_figures filesep 'median-cross-en-es'], 'jpg')
 
 %% ************************************************************************
 %% Export of overview to csv
