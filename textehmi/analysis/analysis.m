@@ -151,14 +151,14 @@ cmap = colormap(jet); % choose colormap
 counter_colour = 1;  % counter for assigned colours
 for i=1:N_STIMULI % loop over eHMIs
     % get index in cell array
-    ehmi = strtrim(eHMI_text_MedSorted(i,:));
+    ehmi = strtrim(eHMI_text_MeanSorted(i,:));
     % check if there is Spanish translation
     if find(ismember(mapping{:,10}, ehmi))
         index_es = find(ismember(mapping{:,10}, ehmi));
         ehmi_es = char(mapping{index_es,2});
         % find index of ES eHMI
         for j=1:N_STIMULI % loop over eHMIs
-            ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+            ehmi_tick_trimmed = strtrim(eHMI_text_MeanSorted(j,:));
             if strcmp(ehmi_es, ehmi_tick_trimmed)
                 i_es = j;
                 break;
@@ -201,14 +201,14 @@ cmap = colormap(jet); % choose colormap
 counter_colour = 1;  % counter for assigned colours
 for i=1:N_STIMULI % loop over eHMIs
     % get index in cell array
-    ehmi = strtrim(eHMI_text_MedSorted(i,:));
+    ehmi = strtrim(eHMI_text_STDSorted(i,:));
     % check if there is Spanish translation
     if find(ismember(mapping{:,10}, ehmi))
         index_es = find(ismember(mapping{:,10}, ehmi));
         ehmi_es = char(mapping{index_es,2});
         % find index of ES eHMI
         for j=1:N_STIMULI % loop over eHMIs
-            ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+            ehmi_tick_trimmed = strtrim(eHMI_text_STDSorted(j,:));
             if strcmp(ehmi_es, ehmi_tick_trimmed)
                 i_es = j;
                 break;
