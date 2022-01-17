@@ -37,19 +37,24 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     % Driver behaviour questionnaire (DBQ)
     temp=raw_appen(:,appen_indices(10:16));X(:,9:15)=1*strcmp(temp,'0_times_per_month')+2*strcmp(temp,'1_to_3_times_per_month')+3*strcmp(temp,'4_to_6_times_per_month')+4*strcmp(temp,'7_to_9_times_per_month')+5*strcmp(temp,'10_or_more_times_per_month')-1*strcmp(temp,'i_prefer_not_to_respond');
     % Proficiency of English
-    temp=raw_appen(:,appen_indices(5));X(:,16)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
+    temp=raw_appen(:,appen_indices(17));X(:,16)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
     % Proficiency of Spanish
-    temp=raw_appen(:,appen_indices(5));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
+    temp=raw_appen(:,appen_indices(18));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
     % English test question 1. Correct: a2. Only for half an hour.
-    temp=raw_appen(:,appen_indices(19));X(:,18)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    temp=raw_appen(:,appen_indices(19));X(:,18)=+0*strcmp(temp,'a0')+0*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q1) = ' num2str(sum(X(:,18)<=0))])
     % English test question 2. Correct: a1. We can't decide.
-    temp=raw_appen(:,appen_indices(20));X(:,19)=-1*strcmp(temp,'a0')+1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
+    temp=raw_appen(:,appen_indices(20));X(:,19)=+0*strcmp(temp,'a0')+1*strcmp(temp,'a1')+0*strcmp(temp,'a2');
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q2) = ' num2str(sum(X(:,19)<=0))])
     % English test question 3. Correct: a0. Would you like some help?
-    temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
+    temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')+0*strcmp(temp,'a1')+0*strcmp(temp,'a2');
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q3) = ' num2str(sum(X(:,20)<=0))])
     % English test question 4. Correct: a2. I'll just check for you.
-    temp=raw_appen(:,appen_indices(22));X(:,21)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    temp=raw_appen(:,appen_indices(22));X(:,21)=+0*strcmp(temp,'a0')+0*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q4) = ' num2str(sum(X(:,21)<=0))])
     % English test question 5. Correct: a0. I'm too tired.
-    temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
+    temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')+0*strcmp(temp,'a1')+0*strcmp(temp,'a2');
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q5) = ' num2str(sum(X(:,22)<=0))])
     % Set negative answers as NaN
     X(X<0)=NaN;
     %% Survey time
@@ -120,14 +125,6 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             X(row_appen_matched, 267)=1;  % flag that row was matched
         end
     end
-    %% Output on English language questions
-    en_lang_qs = find(isnan(sum(X(:,18:22),2))); % proficiency in English
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (q1) = ' num2str(length(isnan(sum(X(:,18),2))))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q2) = ' num2str(length(isnan(sum(X(:,19),2))))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q3) = ' num2str(length(isnan(sum(X(:,20),2))))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q4) = ' num2str(length(isnan(sum(X(:,21),2))))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q5) = ' num2str(length(isnan(sum(X(:,22),2))))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency = ' num2str(length(en_lang_qs))])
     %% Remove participants who did not meet the criteria
     invalid1 = find(X(:,1)==1); % respondents who did not read instructions
     invalid2 = find(X(:,3)<18);  % respondents who indicated they are under 18 years old

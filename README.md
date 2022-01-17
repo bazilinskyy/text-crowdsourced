@@ -36,6 +36,9 @@ Median response time for participants from USA and Venezuela.
 ![response willingness over number of characters](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-num-chars.jpg?raw=true)
 Median willingness related to the length of the eHMI.
 
+![correlation plot](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/corrplot.jpg?raw=true)
+Correlation plot.
+
 ### Configuration of analysis
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:
 * `file_heroku`: file with data from heroku.
