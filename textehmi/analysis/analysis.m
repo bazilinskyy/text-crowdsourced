@@ -393,7 +393,9 @@ for i=1:47
     scatter2.MarkerFaceAlpha = 0.5;
 end
     plot([0 100],[0 100],'b--')
-legend('Participants with preferred language of Spanish','Participants with preferred language of English','location','southeast')
+legend('Participants with preferred language of Spanish', ...
+       'Participants with preferred language of English', ...
+       'location','southeast')
 xlabel('Mean willingness to cross - English text');
 ylabel('Mean willingness to cross - Spanish text');
 h=findobj('FontName','Helvetica');
