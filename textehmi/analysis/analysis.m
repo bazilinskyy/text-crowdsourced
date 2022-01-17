@@ -447,7 +447,6 @@ end
 %% ************************************************************************
 %% Export of overview to csv
 %% ************************************************************************
-% m = [mapping{:,2}; RPoMed; RPoSTD];
 t = table(mapping{:,2}, RPoMed, RPoMean, RPoSTD, 'VariableNames', {'eHMI' 'med' 'mean' 'std'});
 t_med = sortrows(t, 2, 'descend');  % sort by median of willingness to cross
 t_mean = sortrows(t, 3, 'descend');  % sort by mean of willingness to cross
