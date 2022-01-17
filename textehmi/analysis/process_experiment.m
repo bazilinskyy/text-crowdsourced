@@ -11,7 +11,7 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     raw_appen = readtable(appen_file, 'ReadVariableNames', false);
     raw_appen = table2cell(raw_appen);  % convert to cell array for ease of checking
     %% Filter appen data
-    X=NaN(size(raw_appen,1),267);
+    X=NaN(size(raw_appen,1),268);
     disp(['Number of respondents = ' num2str(size(raw_appen, 1))])
     temp=raw_appen(:,appen_indices(1));X(:,1)=strcmp(temp,'no')+2*strcmp(temp,'yes'); % Instructions understood
     temp=raw_appen(:,appen_indices(2));X(:,2)=1*strcmp(temp,'female')+2*strcmp(temp,'male')-1*strcmp(temp,'i_prefer_not_to_respond'); % Gender
@@ -52,13 +52,22 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     disp(['Last survey end date - Before filtering = ' datestr(max(X(:,24)))]);
     %%
     % Worker id
-    temp=raw_appen(:,appen_indices(26));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,267)=NaN;else;X(i,267)= cell2mat(temp(i));end;catch error;X(i,267)=NaN;end;end % worker id
+    temp=raw_appen(:,appen_indices(26));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,268)=NaN;else;X(i,268)= cell2mat(temp(i));end;catch error;X(i,268)=NaN;end;end % worker id
     %% Process keypress data
     disp('Processing keypress data');
     counter_code = 0;
     for i1=1:size(raw_heroku,1) % loop over rows
         temp=cell2mat(table2array(raw_heroku(i1,29)));
         temp2=cell2mat(table2array(raw_heroku(i1,29+N_STIMULI-1)));
+        % detect if the browser language is Spanish
+        temp3=cell2mat(table2array(raw_heroku(i1,28)));
+        % browser language in heroku data
+        browser_fetched = temp3(regexp(temp3,'browser_lang:')+14:end-1);
+        if contains(browser_fetched, 'es')
+            browser_lang = 1;
+        else
+            browser_lang = 0;
+        end
         extracted_row=table2array(raw_heroku(i1,29+N_STIMULI:end));
         imageid(i1,:)=[str2double(temp(12:end)) table2array(raw_heroku(i1,30:29+N_STIMULI-2)) str2num(temp2(1:regexp(temp2,']')-1))];
         counter1=0;
@@ -88,7 +97,8 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             X(row_appen_matched, 26:105)=RT(i1,:);
             X(row_appen_matched, 106:185)=RP(i1,:);
             X(row_appen_matched, 186:265)=imageid(i1,1:80);
-            X(row_appen_matched, 266)=1;  % flag that row was matched
+            X(row_appen_matched, 266)=browser_lang;  % browser language
+            X(row_appen_matched, 267)=1;  % flag that row was matched
         end
     end
     %% Remove participants who did not meet the criteria
@@ -135,6 +145,8 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     disp(['Gender, I prefer not to respond = ' num2str(sum(isnan(X(:,2))))])
     disp(['Age, mean = ' num2str(nanmean(X(:,3)))])
     disp(['Age, sd = ' num2str(nanstd(X(:,3)))])
+    %% Language
+    disp(['Browser language set to Spanish = ' num2str(sum(X(:,266)))])
     %% Survey time
     disp(['Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,25)/60))]);
     disp(['Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,25)/60))]);

@@ -9,7 +9,7 @@ N_PERSON = 80;    % number of stimuli per person
 STEP_COLOUR = 5;  % step for traversing over colourmap
 COLOUR_SAME_EHMI = false;  % flag for colouring eHMI in ES/EN on figures
                            % with all eHMI
-SAVE_FIGURES = true;       % flag for saving figures as EPS and JPG files
+SAVE_FIGURES = false;       % flag for saving figures as EPS and JPG files
 
 %% ************************************************************************
 %% Load config
@@ -58,21 +58,21 @@ mapping = readtable(config.mapping);
 %% ************************************************************************
 %% OUTPUT
 %% ************************************************************************
-RT = X(:, 26:105);  % amount of time used to press the key
-RP = X(:, 106:185);  % response from the slider
+opengl hardware
+%% Prepare data
+RT = X(:, 26:105);       % amount of time used to press the key
+RP = X(:, 106:185);      % response from the slider
 imageid = X(:,186:265);  % image ids as shown
+lang_es = X(:,266);      % language (1=Spanish, 0=not Spanish)
 eHMI_text=mapping(:,2);  % labels with eHMIs
-
-%% Order based on image number
+% Order based on image number
 [RPo,RTo]=deal(NaN(size(RP,1),N_STIMULI));
 for i=1:size(RP,1) % loop over pp
     % TODO: check if no matlab logic is broken with conversion from 0 to 1 for index
     RPo(i,imageid(i,:)+1)=RP(i,:);
     RTo(i,imageid(i,:)+1)=RT(i,:);
 end
-
-%% Median willingness to cross
-opengl hardware
+% Median willingness to cross
 [RPoMed,RPoSTD,RPoMedVE,RPoMedUS,RToMedVE,RToMedUS]=deal(NaN(N_STIMULI,1));
 for i=1:size(RPo,2)
     RPoMed(i)=nanmedian(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal medians sorted on SD
@@ -83,8 +83,24 @@ for i=1:size(RPo,2)
     RToMedUS(i)=nanmedian(RTo(contains(Country,'US'),i)); % median RT participants from USA
 end
 [RPoMedSorted,b]=sort(RPoMed);
-% build xticks
 eHMI_text_MedSorted=char(eHMI_text{b,:});
+% Mean willingness to cross
+[RPoMean,RPoSTD,RPoMeanVE,RPoMeanUS,RToMeanVE,RToMeanUS,o,NN]=deal(NaN(N_STIMULI,1));
+for i=1:size(RPo,2)
+    RPoMean(i)=nanmean(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal mean sorted on SD
+    RPoSTD(i)=nanstd(RPo(:,i));
+    RPoMeanVE(i)=nanmean(RPo(contains(Country,'VE'),i)); % mean for participants from VEN
+    RPoMeanUS(i)=nanmean(RPo(contains(Country,'US'),i)); % mean for participants from USA
+    RToMeanVE(i)=nanmean(RTo(contains(Country,'VE'),i)); % mean RT participants from VEN
+    RToMeanUS(i)=nanmean(RTo(contains(Country,'US'),i)); % mean RT participants from USA  
+end
+[RPoMeanSorted,b]=sort(RPoMean);
+eHMI_text_MeanSorted=char(eHMI_text{b,:});
+% SD willingness to cross
+[RPoSTDSorted,bs]=sort(RPoSTD);
+eHMI_text_STDSorted=char(eHMI_text{bs,:});
+
+%% Median willingness to cross for all stimuli
 figure;
 hold on;
 grid on;
@@ -131,20 +147,54 @@ if SAVE_FIGURES
     export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
 end
 
-%% Mean willingness to cross
-opengl hardware
-[RPoMean,RPoSTD,RPoMeanVE,RPoMeanUS,RToMeanVE,RToMeanUS,o,NN]=deal(NaN(N_STIMULI,1));
-for i=1:size(RPo,2)
-    RPoMean(i)=nanmean(RPo(:,i))-nanstd(RPo(:,i))/10^6; % equal mean sorted on SD
-    RPoSTD(i)=nanstd(RPo(:,i));
-    RPoMeanVE(i)=nanmean(RPo(contains(Country,'VE'),i)); % mean for participants from VEN
-    RPoMeanUS(i)=nanmean(RPo(contains(Country,'US'),i)); % mean for participants from USA
-    RToMeanVE(i)=nanmean(RTo(contains(Country,'VE'),i)); % mean RT participants from VEN
-    RToMeanUS(i)=nanmean(RTo(contains(Country,'US'),i)); % mean RT participants from USA  
+%% Median willingness to cross for limited number of  stimuli
+figure;
+hold on;
+grid on;
+box on;
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
 end
-[RPoMeanSorted,b]=sort(RPoMean);
-% build xticks
-eHMI_text_MeanSorted=char(eHMI_text{b,:});
+% assign colours to pairs of EN and ES eHMIs
+if COLOUR_SAME_EHMI
+    cmap = colormap(jet); % choose colormap
+    counter_colour = 1;  % counter for assigned colours
+    for i=1:N_STIMULI % loop over eHMIs
+        % get index in cell array
+        ehmi = strtrim(eHMI_text_MedSorted(i,:));
+        % check if there is Spanish translation
+        if find(ismember(mapping{:,10}, ehmi))
+            index_es = find(ismember(mapping{:,10}, ehmi));
+            ehmi_es = char(mapping{index_es,2});
+            % find index of ES eHMI
+            for j=1:N_STIMULI % loop over eHMIs
+                ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
+                if strcmp(ehmi_es, ehmi_tick_trimmed)
+                    i_es = j;
+                    break;
+                end
+            end
+            % set colour
+            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+            counter_colour = counter_colour + 5;
+        end
+    end
+end
+set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_MedSorted)
+xlabel('eHMI');
+ylabel('Median willingness to cross (%)')
+h=findobj('FontName','Helvetica');
+set(h,'FontSize',8,'Fontname','Arial')
+set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
+% maximise and export as eps and jpg (for readme)
+if SAVE_FIGURES
+    export_figure(gcf, [config.path_output filesep 'median-cross-top-bottom'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'median-cross-top-bottom'], 'jpg')
+end
+
+%% Mean willingness to cross for all stimuli
 figure;
 hold on;
 grid on;
@@ -191,10 +241,7 @@ if SAVE_FIGURES
     export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
 end
 
-%% SD willingness to cross - Please cross
-[RPoSTDSorted,bs]=sort(RPoSTD);
-% build xticks
-eHMI_text_STDSorted=char(eHMI_text{bs,:});
+%% SD willingness to cross for all stimuli
 figure;
 hold on;
 box on;
@@ -345,19 +392,19 @@ for i=1:47 % loop over 47 Spanish eHMI texts
 end
 figure;hold on;grid on;box on
 for i=1:47
-    scatter1 = scatter(nanmean(RPo(contains(Country,'VE'),Ewi(i))), nanmean(RPo(contains(Country,'VE'),i+180)), 250, ...
+    scatter1 = scatter(nanmean(RPo(lang_es==1,Ewi(i))), nanmean(RPo(lang_es==1,i+180)), 250, ...
         'markerfacecolor', [255, 204, 0]/255, ...
         'markeredgecolor', 'none');
-    scatter2 = scatter(nanmean(RPo(~contains(Country,'VE') & ~contains(Country,'US'),Ewi(i))), nanmean(RPo(~contains(Country,'VE') & ~contains(Country,'US'),i+180)), 250, ...
+    scatter2 = scatter(nanmean(RPo(lang_es==0,Ewi(i))), nanmean(RPo(lang_es==0,i+180)), 250, ...
         'markerfacecolor', [179, 25, 66]/255, ...
         'markeredgecolor', 'none');
-    plot([nanmean(RPo(contains(Country,'VE'),Ewi(i))) nanmean(RPo(~contains(Country,'VE') & ~contains(Country,'US'),Ewi(i)))],...
-        [nanmean(RPo(contains(Country,'VE'),i+180)) nanmean(RPo(~contains(Country,'VE') & ~contains(Country,'US'),i+180))],'k--')
+    plot([nanmean(RPo(lang_es==1,Ewi(i))) nanmean(RPo(lang_es==0,Ewi(i)))],...
+        [nanmean(RPo(lang_es==1,i+180)) nanmean(RPo(lang_es==0,i+180))],'k--')
     scatter1.MarkerFaceAlpha = 0.5;
     scatter2.MarkerFaceAlpha = 0.5;
 end
     plot([0 100],[0 100],'b--')
-legend('Participants from VEN','Participants from countries other than VEN and USA','location','southeast')
+legend('Participants with preffered language of Spanish','Participants with preffered language of English','location','southeast')
 xlabel('Mean willingness to cross - English text');
 ylabel('Mean willingness to cross - Spanish text');
 h=findobj('FontName','Helvetica');
