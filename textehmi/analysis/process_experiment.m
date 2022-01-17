@@ -10,9 +10,10 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     % TODO: fix warning abuot datetime format
     raw_appen = readtable(appen_file, 'ReadVariableNames', false);
     raw_appen = table2cell(raw_appen);  % convert to cell array for ease of checking
-    %% Filter appen data
+    %% Process appen data
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing appen data']);
     X=NaN(size(raw_appen,1),268);
-    disp(['Number of respondents = ' num2str(size(raw_appen, 1))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents = ' num2str(size(raw_appen, 1))])
     temp=raw_appen(:,appen_indices(1));X(:,1)=strcmp(temp,'no')+2*strcmp(temp,'yes'); % Instructions understood
     temp=raw_appen(:,appen_indices(2));X(:,2)=1*strcmp(temp,'female')+2*strcmp(temp,'male')-1*strcmp(temp,'i_prefer_not_to_respond'); % Gender
     temp=raw_appen(:,appen_indices(3));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,3)=NaN;else;X(i,3)= cell2mat(temp(i));end;catch error;X(i,3)=NaN;end;end % Age
@@ -29,7 +30,11 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     % Languages
     temp=raw_appen(:,appen_indices(5));X(:,16)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');  % English
     temp=raw_appen(:,appen_indices(5));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');  % Spanish
-    temp=raw_appen(:,appen_indices(19:23));X(:,18:22)=1*strcmp(temp,'a0')+2*strcmp(temp,'a1')+3*strcmp(temp,'a2')+4*strcmp(temp,'a3'); % English test questions
+    temp=raw_appen(:,appen_indices(19));X(:,18)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2'); % English test question 1. Correct: a2. Only for half an hour.
+    temp=raw_appen(:,appen_indices(20));X(:,19)=-1*strcmp(temp,'a0')+1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 2. Correct: a1. We can't decide.
+    temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 3. Correct: a0. Would you like some help?
+    temp=raw_appen(:,appen_indices(22));X(:,21)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2'); % English test question 4. Correct: a2. I'll just check for you.
+    temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 5. Correct: a0. I'm too tired.
     % Set negative answers as NaN
     X(X<0)=NaN;
     %% Survey time
@@ -45,16 +50,15 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
         X(i,24)=endtime;
         X(i,25)=round(2400*36*(endtime - starttime));
     end
-    disp(['Survey time mean (minutes) - Before filtering = ' num2str(nanmean(X(:,25)/60))]);
-    disp(['Survey time median (minutes) - Before filtering = ' num2str(nanmedian(X(:,25)/60))]);
-    disp(['Survey time SD (minutes) - Before filtering = ' num2str(nanstd(X(:,25)/60))]);
-    disp(['First survey start date - Before filtering = ' datestr(min(X(:,23)))]);
-    disp(['Last survey end date - Before filtering = ' datestr(max(X(:,24)))]);
-    %%
-    % Worker id
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - Before filtering = ' num2str(nanmean(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - Before filtering = ' num2str(nanmedian(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - Before filtering = ' num2str(nanstd(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - Before filtering = ' datestr(min(X(:,23)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - Before filtering = ' datestr(max(X(:,24)))]);
+    %% Worker id
     temp=raw_appen(:,appen_indices(26));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,268)=NaN;else;X(i,268)= cell2mat(temp(i));end;catch error;X(i,268)=NaN;end;end % worker id
-    %% Process keypress data
-    disp('Processing keypress data');
+    %% Process heroku data
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing heroku data']);
     counter_code = 0;
     for i1=1:size(raw_heroku,1) % loop over rows
         temp=cell2mat(table2array(raw_heroku(i1,29)));
@@ -101,6 +105,14 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             X(row_appen_matched, 267)=1;  % flag that row was matched
         end
     end
+    %% Output on English language questions
+    en_lang_qs = find(isnan(sum(X(:,18:22),2))); % proficiency in English
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (q1) = ' num2str(length(isnan(sum(X(:,18),2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q2) = ' num2str(length(isnan(sum(X(:,19),2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q3) = ' num2str(length(isnan(sum(X(:,20),2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q4) = ' num2str(length(isnan(sum(X(:,21),2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency (q5) = ' num2str(length(isnan(sum(X(:,22),2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in questions on English proficiency = ' num2str(length(en_lang_qs))])
     %% Remove participants who did not meet the criteria
     invalid1 = find(X(:,1)==1); % respondents who did not read instructions
     invalid2 = find(X(:,3)<18);  % respondents who indicated they are under 18 years old
@@ -131,34 +143,34 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     Country(invalid)=[]; % Remove invalid countries
     raw_appen(invalid,:)=[]; % Remove invalid respondents
     %% Output with statistics and filtering information
-    disp(['Number of respondents who did not read instructions = ' num2str(length(invalid1))])
-    disp(['Number of respondents under 18 = ' num2str(length(invalid2))])
-    disp(['Number of respondents that took less than 300 s = ' num2str(length(invalid3))])
-    disp(['Number of responses coming from the same IP = ' num2str(length(invalid4))])
-    disp(['Number of rows in keypress data not matched:  ' num2str(length(invalid5))]);
-    disp(['Number of respondents removed = ' num2str(length(invalid))])
-    disp(['Number of respondents included in the analysis:  ' num2str(size(X,1))]);
-    disp(['Number of countries included in the analysis:  ' num2str(length(unique(Country)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents who did not read instructions = ' num2str(length(invalid1))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents under 18 = ' num2str(length(invalid2))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that took less than 300 s = ' num2str(length(invalid3))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of responses coming from the same IP = ' num2str(length(invalid4))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of rows in keypress data not matched:  ' num2str(length(invalid5))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents removed = ' num2str(length(invalid))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents included in the analysis:  ' num2str(size(X,1))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of countries included in the analysis:  ' num2str(length(unique(Country)))])
     %% Gender, age
-    disp(['Gender, male respondents = ' num2str(sum(X(:,2)==2))])
-    disp(['Gender, female respondents = ' num2str(sum(X(:,2)==1))])
-    disp(['Gender, I prefer not to respond = ' num2str(sum(isnan(X(:,2))))])
-    disp(['Age, mean = ' num2str(nanmean(X(:,3)))])
-    disp(['Age, sd = ' num2str(nanstd(X(:,3)))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Gender, male respondents = ' num2str(sum(X(:,2)==2))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Gender, female respondents = ' num2str(sum(X(:,2)==1))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Gender, I prefer not to respond = ' num2str(sum(isnan(X(:,2))))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, mean = ' num2str(nanmean(X(:,3)))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, sd = ' num2str(nanstd(X(:,3)))])
     %% Language
-    disp(['Browser language set to Spanish = ' num2str(sum(X(:,266)))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to Spanish = ' num2str(sum(X(:,266)))])
     %% Survey time
-    disp(['Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,25)/60))]);
-    disp(['Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,25)/60))]);
-    disp(['Survey time SD (minutes) - After filtering = ' num2str(nanstd(X(:,25)/60))]);
-    disp(['First survey start date - After filtering = ' datestr(min(X(:,23)))]);
-    disp(['Last survey end date - After filtering = ' datestr(max(X(:,24)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - After filtering = ' num2str(nanstd(X(:,25)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - After filtering = ' datestr(min(X(:,23)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - After filtering = ' datestr(max(X(:,24)))]);
     %% Most common countries (after filtering)
     [~, ~, ub] = unique(Country);
     test2counts = histcounts(ub, 'BinMethod','integers');
     [B,I] = maxk(test2counts,10);
     country_unique = unique(Country);
-    disp('Most common countries (after filtering) = ')
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Most common countries (after filtering) = '])
     disp(country_unique(I)')
     disp(B)
 end
