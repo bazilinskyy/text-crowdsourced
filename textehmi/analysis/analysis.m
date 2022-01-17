@@ -453,7 +453,7 @@ t_med = sortrows(t, 2, 'descend');  % sort by median of willingness to cross
 t_mean = sortrows(t, 3, 'descend');  % sort by mean of willingness to cross
 t_std = sortrows(t, 4, 'descend');  % sort by std of willingness to cross
 % export to csvs
-writetable(t,[config.path_output filesep 'ehmi.csv']);
-writetable(t_med,[config.path_output filesep 'ehmi_med.csv']);
-writetable(t_mean,[config.path_output filesep 'ehmi_mean.csv']);
-writetable(t_std,[config.path_output filesep 'ehmi_std.csv']);
+writetable(t,[config.path_output filesep 'ehmis.csv']);
+writetable(t_med,[config.path_output filesep 'ehmis_med.csv']);
+writetable(t_mean,[config.path_output filesep 'ehmis_mean.csv']);
+writetable(t_std,[config.path_output filesep 'ehmis_std.csv']);
