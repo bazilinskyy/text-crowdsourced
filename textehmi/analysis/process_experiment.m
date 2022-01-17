@@ -14,27 +14,42 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing appen data']);
     X=NaN(size(raw_appen,1),268);
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents = ' num2str(size(raw_appen, 1))])
-    temp=raw_appen(:,appen_indices(1));X(:,1)=strcmp(temp,'no')+2*strcmp(temp,'yes'); % Instructions understood
-    temp=raw_appen(:,appen_indices(2));X(:,2)=1*strcmp(temp,'female')+2*strcmp(temp,'male')-1*strcmp(temp,'i_prefer_not_to_respond'); % Gender
-    temp=raw_appen(:,appen_indices(3));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,3)=NaN;else;X(i,3)= cell2mat(temp(i));end;catch error;X(i,3)=NaN;end;end % Age
+    % Instructions understood
+    temp=raw_appen(:,appen_indices(1));X(:,1)=strcmp(temp,'no')+2*strcmp(temp,'yes');
+    % Gender
+    temp=raw_appen(:,appen_indices(2));X(:,2)=1*strcmp(temp,'female')+2*strcmp(temp,'male')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % Age
+    temp=raw_appen(:,appen_indices(3));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,3)=NaN;else;X(i,3)= cell2mat(temp(i));end;catch error;X(i,3)=NaN;end;end
     X(X(:,3)>110,3)=NaN; % People who report age greater than 110 years
-    temp=raw_appen(:,appen_indices(4));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,4)=NaN;else;X(i,4)= cell2mat(temp(i));end;catch error;X(i,4)=NaN;end;end % Age of obtaining driver's license
+    % Age of obtaining driver's license
+    temp=raw_appen(:,appen_indices(4));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,4)=NaN;else;X(i,4)= cell2mat(temp(i));end;catch error;X(i,4)=NaN;end;end
     X(X(:,4)>110,4)=NaN; % People who report licence more than 110 years
-    temp=raw_appen(:,appen_indices(5));X(:,5)=1*strcmp(temp,'private_vehicle')+2*strcmp(temp,'public_transportation')+3*strcmp(temp,'motorcycle')+4*strcmp(temp,'walkingcycling')+5*strcmp(temp,'other')-1*strcmp(temp,'i_prefer_not_to_respond');  % Primary mode of transportation
-    temp=raw_appen(:,appen_indices(6));X(:,6)=1*strcmp(temp,'never')+2*strcmp(temp,'less_than_once_a_month')+3*strcmp(temp,'once_a_month_to_once_a_week')+4*strcmp(temp,'1_to_3_days_a_week')+5*strcmp(temp,'4_to_6_days_a_week')+6*strcmp(temp,'every_day')-1*strcmp(temp,'i_prefer_not_to_respond'); % How many times in past 12 months did you drive a vehicle
-    temp=raw_appen(:,appen_indices(7));for i=1:length(temp);try X(i,7)=1+cell2mat(temp(i));catch error;X(i,7)=1*strcmp(temp(i),'0_km__mi')+2*strcmp(temp(i),'1__1000_km_1__621_mi')+3*strcmp(temp(i),'1001__5000_km_622__3107_mi')+4*strcmp(temp(i),'5001__15000_km_3108__9321_mi')+5*strcmp(temp(i),'15001__20000_km_9322__12427_mi')+6*strcmp(temp(i),'20001__25000_km_12428__15534_mi')+7*strcmp(temp(i),'25001__35000_km_15535__21748_mi')+8*strcmp(temp(i),'35001__50000_km_21749__31069_mi')+9*strcmp(temp(i),'50001__100000_km_31070__62137_mi')+10*strcmp(temp(i),'more_than_100000_km_more_than_62137_mi')-1*strcmp(temp(i),'i_prefer_not_to_respond');end;end % Mileage
-    temp=raw_appen(:,appen_indices(8));for i=1:length(temp);try X(i,8)=1+cell2mat(temp(i));catch error;X(i,8)=7*strcmp(temp(i),'more_than_5')-1*strcmp(temp(i),'i_prefer_not_to_respond');end;end % Number of accidents
-    temp=raw_appen(:,appen_indices(9));Country=cell(size(X,1),1);for i=1:length(temp);try Country(i)=unique(temp(i));catch error;Country(i)={'NaN'};end;end % Country
+    % Primary mode of transportation
+    temp=raw_appen(:,appen_indices(5));X(:,5)=1*strcmp(temp,'private_vehicle')+2*strcmp(temp,'public_transportation')+3*strcmp(temp,'motorcycle')+4*strcmp(temp,'walkingcycling')+5*strcmp(temp,'other')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % How many times in past 12 months did you drive a vehicle
+    temp=raw_appen(:,appen_indices(6));X(:,6)=1*strcmp(temp,'never')+2*strcmp(temp,'less_than_once_a_month')+3*strcmp(temp,'once_a_month_to_once_a_week')+4*strcmp(temp,'1_to_3_days_a_week')+5*strcmp(temp,'4_to_6_days_a_week')+6*strcmp(temp,'every_day')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % Mileage
+    temp=raw_appen(:,appen_indices(7));for i=1:length(temp);try X(i,7)=1+cell2mat(temp(i));catch error;X(i,7)=1*strcmp(temp(i),'0_km__mi')+2*strcmp(temp(i),'1__1000_km_1__621_mi')+3*strcmp(temp(i),'1001__5000_km_622__3107_mi')+4*strcmp(temp(i),'5001__15000_km_3108__9321_mi')+5*strcmp(temp(i),'15001__20000_km_9322__12427_mi')+6*strcmp(temp(i),'20001__25000_km_12428__15534_mi')+7*strcmp(temp(i),'25001__35000_km_15535__21748_mi')+8*strcmp(temp(i),'35001__50000_km_21749__31069_mi')+9*strcmp(temp(i),'50001__100000_km_31070__62137_mi')+10*strcmp(temp(i),'more_than_100000_km_more_than_62137_mi')-1*strcmp(temp(i),'i_prefer_not_to_respond');end;end
+    % Number of accidents
+    temp=raw_appen(:,appen_indices(8));for i=1:length(temp);try X(i,8)=1+cell2mat(temp(i));catch error;X(i,8)=7*strcmp(temp(i),'more_than_5')-1*strcmp(temp(i),'i_prefer_not_to_respond');end;end
+    % Country
+    temp=raw_appen(:,appen_indices(9));Country=cell(size(X,1),1);for i=1:length(temp);try Country(i)=unique(temp(i));catch error;Country(i)={'NaN'};end;end
     % Driver behaviour questionnaire (DBQ)
-    temp=raw_appen(:,appen_indices(10:16));X(:,9:15)=1*strcmp(temp,'0_times_per_month')+2*strcmp(temp,'1_to_3_times_per_month')+3*strcmp(temp,'4_to_6_times_per_month')+4*strcmp(temp,'7_to_9_times_per_month')+5*strcmp(temp,'10_or_more_times_per_month')-1*strcmp(temp,'i_prefer_not_to_respond'); % DBQ violations
-    % Languages
-    temp=raw_appen(:,appen_indices(5));X(:,16)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');  % English
-    temp=raw_appen(:,appen_indices(5));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');  % Spanish
-    temp=raw_appen(:,appen_indices(19));X(:,18)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2'); % English test question 1. Correct: a2. Only for half an hour.
-    temp=raw_appen(:,appen_indices(20));X(:,19)=-1*strcmp(temp,'a0')+1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 2. Correct: a1. We can't decide.
-    temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 3. Correct: a0. Would you like some help?
-    temp=raw_appen(:,appen_indices(22));X(:,21)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2'); % English test question 4. Correct: a2. I'll just check for you.
-    temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2'); % English test question 5. Correct: a0. I'm too tired.
+    temp=raw_appen(:,appen_indices(10:16));X(:,9:15)=1*strcmp(temp,'0_times_per_month')+2*strcmp(temp,'1_to_3_times_per_month')+3*strcmp(temp,'4_to_6_times_per_month')+4*strcmp(temp,'7_to_9_times_per_month')+5*strcmp(temp,'10_or_more_times_per_month')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % Proficiency of English
+    temp=raw_appen(:,appen_indices(5));X(:,16)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % Proficiency of Spanish
+    temp=raw_appen(:,appen_indices(5));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
+    % English test question 1. Correct: a2. Only for half an hour.
+    temp=raw_appen(:,appen_indices(19));X(:,18)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    % English test question 2. Correct: a1. We can't decide.
+    temp=raw_appen(:,appen_indices(20));X(:,19)=-1*strcmp(temp,'a0')+1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
+    % English test question 3. Correct: a0. Would you like some help?
+    temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
+    % English test question 4. Correct: a2. I'll just check for you.
+    temp=raw_appen(:,appen_indices(22));X(:,21)=-1*strcmp(temp,'a0')-1*strcmp(temp,'a1')+1*strcmp(temp,'a2');
+    % English test question 5. Correct: a0. I'm too tired.
+    temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')-1*strcmp(temp,'a1')-1*strcmp(temp,'a2');
     % Set negative answers as NaN
     X(X<0)=NaN;
     %% Survey time
