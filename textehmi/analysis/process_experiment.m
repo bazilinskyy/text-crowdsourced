@@ -12,7 +12,7 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     raw_appen = table2cell(raw_appen);  % convert to cell array for ease of checking
     %% Process appen data
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing appen data']);
-    X=NaN(size(raw_appen,1),268);
+    X=NaN(size(raw_appen,1),269);
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents = ' num2str(size(raw_appen, 1))])
     % Instructions understood
     temp=raw_appen(:,appen_indices(1));X(:,1)=strcmp(temp,'no')+2*strcmp(temp,'yes');
@@ -55,7 +55,9 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     % English test question 5. Correct: a0. I'm too tired.
     temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')+0*strcmp(temp,'a1')+0*strcmp(temp,'a2');
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q5) = ' num2str(sum(X(:,22)<=0))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in any questions on English proficiency = ' num2str(sum(X(:,18)+X(:,19)+X(:,20)+X(:,21)+X(:,22)<5))])
+    % Sum of number of correct answers
+    X(:,23) = X(:,18)+X(:,19)+X(:,20)+X(:,21)+X(:,22);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in any questions on English proficiency = ' num2str(sum(X(:,23)<5))])
     % Set negative answers as NaN
     X(X<0)=NaN;
     %% Survey time
@@ -67,17 +69,17 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             starttime=datenum(raw_appen{i,appen_indices(24)});
             endtime=datenum(raw_appen{i,appen_indices(25)});
         end
-        X(i,23)=starttime;
-        X(i,24)=endtime;
-        X(i,25)=round(2400*36*(endtime - starttime));
+        X(i,24)=starttime;
+        X(i,25)=endtime;
+        X(i,26)=round(2400*36*(endtime - starttime));
     end
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - Before filtering = ' num2str(nanmean(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - Before filtering = ' num2str(nanmedian(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - Before filtering = ' num2str(nanstd(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - Before filtering = ' datestr(min(X(:,23)))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - Before filtering = ' datestr(max(X(:,24)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - Before filtering = ' num2str(nanmean(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - Before filtering = ' num2str(nanmedian(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - Before filtering = ' num2str(nanstd(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - Before filtering = ' datestr(min(X(:,24)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - Before filtering = ' datestr(max(X(:,25)))]);
     %% Worker id
-    temp=raw_appen(:,appen_indices(26));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,268)=NaN;else;X(i,268)= cell2mat(temp(i));end;catch error;X(i,268)=NaN;end;end % worker id
+    temp=raw_appen(:,appen_indices(26));for i=1:length(temp);try if strcmp(temp(i),'?');X(i,269)=NaN;else;X(i,269)= cell2mat(temp(i));end;catch error;X(i,269)=NaN;end;end % worker id
     %% Process heroku data
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing heroku data']);
     counter_code = 0;
@@ -119,18 +121,18 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
         % add data to corresponding row in X
         if ~isempty(row_appen_matched)
             row_appen_matched=row_appen_matched(1);
-            X(row_appen_matched, 26:105)=RT(i1,:);
-            X(row_appen_matched, 106:185)=RP(i1,:);
-            X(row_appen_matched, 186:265)=imageid(i1,1:80);
-            X(row_appen_matched, 266)=browser_lang;  % browser language
-            X(row_appen_matched, 267)=1;  % flag that row was matched
+            X(row_appen_matched, 27:106)=RT(i1,:);
+            X(row_appen_matched, 107:186)=RP(i1,:);
+            X(row_appen_matched, 187:266)=imageid(i1,1:80);
+            X(row_appen_matched, 267)=browser_lang;  % browser language
+            X(row_appen_matched, 268)=1;  % flag that row was matched
         end
     end
     %% Remove participants who did not meet the criteria
     invalid1 = find(X(:,1)==1); % respondents who did not read instructions
     invalid2 = find(X(:,3)<18);  % respondents who indicated they are under 18 years old
-    invalid3 = find(X(:,25)<300);  % respondents who took less than 5 min to complete
-    invalid5 = find(isnan(sum(X(:,106:185),2))); % respondents with no response data / match
+    invalid3 = find(X(:,26)<300);  % respondents who took less than 5 min to complete
+    invalid5 = find(isnan(sum(X(:,107:186),2))); % respondents with no response data / match
     %% Find rows with identical IP addresses
     y = NaN(size(X(:,1)));
     IPCF_1=NaN(size(raw_appen,1),1);
@@ -171,13 +173,13 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, mean = ' num2str(nanmean(X(:,3)))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, sd = ' num2str(nanstd(X(:,3)))])
     %% Language
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to Spanish = ' num2str(sum(X(:,266)))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to Spanish = ' num2str(sum(X(:,267)))])
     %% Survey time
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - After filtering = ' num2str(nanstd(X(:,25)/60))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - After filtering = ' datestr(min(X(:,23)))]);
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - After filtering = ' datestr(max(X(:,24)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time SD (minutes) - After filtering = ' num2str(nanstd(X(:,26)/60))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - First survey start date - After filtering = ' datestr(min(X(:,24)))]);
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Last survey end date - After filtering = ' datestr(max(X(:,25)))]);
     %% Most common countries (after filtering)
     [~, ~, ub] = unique(Country);
     test2counts = histcounts(ub, 'BinMethod','integers');
