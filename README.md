@@ -44,3 +44,4 @@ Configuration of analysis needs to be defined in `text-crowdsourced/config`. Ple
 * `mapping`: csv file with mapping of stimuli.
 * `path_figures`: path for outputting figures in the EPS format.
 * `path_figures_readme`: path for outputting figures in the JPG format.
+* `save_figures`: flag for saving figures as EPS and JPG files.

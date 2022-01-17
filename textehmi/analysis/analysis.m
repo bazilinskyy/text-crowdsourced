@@ -10,8 +10,7 @@ N_SUB = 20;       % number of top and bottom stimuli to show in
                   % barplots
 STEP_COLOUR = 5;  % step for traversing over colourmap
 COLOUR_SAME_EHMI = true;  % flag for colouring eHMI in ES/EN on figures
-                           % with all eHMI
-SAVE_FIGURES = true;       % flag for saving figures as EPS and JPG files
+                          % with all eHMI
 
 %% ************************************************************************
 %% Load config
@@ -144,7 +143,7 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'median-cross'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
 end
@@ -162,7 +161,7 @@ end
 set(gca,'xlim',[1 1+N_SUB+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:1+N_SUB])
 set(gca,'xticklabel',eHMI_text_MedSorted(1:1+N_SUB,:))
 xlabel('eHMI');
-ylabel('Median willingness to cross (%)'
+ylabel('Median willingness to cross (%)')
 % top N_SUB
 subplot(1,2,2);
 hold on;
@@ -180,7 +179,7 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'median-cross-subgroup'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'median-cross-subgroup'], 'jpg')
 end
@@ -227,7 +226,7 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'mean-cross'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
 end
@@ -273,7 +272,7 @@ h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'sd-cross'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 end
@@ -309,7 +308,7 @@ set(gca, ...
     'ylim',[0 101])
 axis equal
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'median-cross-usa-ven'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'median-cross-usa-ven'], 'jpg')
 end
@@ -345,7 +344,7 @@ set(gca, ...
     'ylim', [3000 10000])
 axis equal
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'response-time-usa-ven'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'response-time-usa-ven'], 'jpg')
 end
@@ -370,7 +369,7 @@ set(gca, ...
     'ylim', [2000 10000])
 %axis equal
 % maximise and export as eps and jpg (for readme)
-if SAVE_FIGURES
+if config.save_figures
     export_figure(gcf, [config.path_output filesep 'response-time-num-chars'], 'epsc')
     export_figure(gcf, [config.path_figures filesep 'response-time-num-chars'], 'jpg')
 end
