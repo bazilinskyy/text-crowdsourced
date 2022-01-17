@@ -8,7 +8,7 @@ N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
 N_SUB = 20;       % number of top and bottom stimuli to show in
                   % barplots
-STEP_COLOUR = 5;  % step for traversing over colourmap
+STEP_COLOUR = 5;  % stepa for traversing over colourmap
 COLOUR_SAME_EHMI = true;  % flag for colouring eHMI in ES/EN on figures
                           % with all eHMI
 
@@ -448,7 +448,13 @@ end
 %% ************************************************************************
 %% Export of overview to csv
 %% ************************************************************************
-% m = [mapping(:,2); nanmedian(RPo(:)); nanstd(RPo(:))]';
-% m_int = sortrows(m, 1, 'descend');  % sort by willingness to cross score
-% m_std = sortrows(m, 2, 'descend');  % sort by std
-% writecell([m m_int m_std],'ehmis.csv');
+% m = [mapping{:,2}; RPoMed; RPoSTD];
+t = table(mapping{:,2}, RPoMed, RPoMean, RPoSTD, 'VariableNames', {'eHMI' 'med' 'mean' 'std'});
+t_med = sortrows(t, 2, 'descend');  % sort by median of willingness to cross
+t_mean = sortrows(t, 3, 'descend');  % sort by mean of willingness to cross
+t_std = sortrows(t, 4, 'descend');  % sort by std of willingness to cross
+% export to csvs
+writetable(t,[config.path_output filesep 'ehmi.csv']);
+writetable(t_med,[config.path_output filesep 'ehmi_med.csv']);
+writetable(t_mean,[config.path_output filesep 'ehmi_mean.csv']);
+writetable(t_std,[config.path_output filesep 'ehmi_std.csv']);

@@ -42,19 +42,20 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     temp=raw_appen(:,appen_indices(18));X(:,17)=1*strcmp(temp,'no_proficiency')+2*strcmp(temp,'limited_working_proficiency')+3*strcmp(temp,'professional_working_proficiency')+4*strcmp(temp,'full_professional_proficiency')+5*strcmp(temp,'native_or_bilingual_proficiency')-1*strcmp(temp,'i_prefer_not_to_respond');
     % English test question 1. Correct: a2. Only for half an hour.
     temp=raw_appen(:,appen_indices(19));X(:,18)=+0*strcmp(temp,'a0')+0*strcmp(temp,'a1')+1*strcmp(temp,'a2');
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q1) = ' num2str(sum(X(:,18)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q1) = ' num2str(sum(X(:,18)<=0))])
     % English test question 2. Correct: a1. We can't decide.
     temp=raw_appen(:,appen_indices(20));X(:,19)=+0*strcmp(temp,'a0')+1*strcmp(temp,'a1')+0*strcmp(temp,'a2');
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q2) = ' num2str(sum(X(:,19)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q2) = ' num2str(sum(X(:,19)<=0))])
     % English test question 3. Correct: a0. Would you like some help?
     temp=raw_appen(:,appen_indices(21));X(:,20)=1*strcmp(temp,'a0')+0*strcmp(temp,'a1')+0*strcmp(temp,'a2');
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q3) = ' num2str(sum(X(:,20)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q3) = ' num2str(sum(X(:,20)<=0))])
     % English test question 4. Correct: a2. I'll just check for you.
     temp=raw_appen(:,appen_indices(22));X(:,21)=+0*strcmp(temp,'a0')+0*strcmp(temp,'a1')+1*strcmp(temp,'a2');
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q4) = ' num2str(sum(X(:,21)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q4) = ' num2str(sum(X(:,21)<=0))])
     % English test question 5. Correct: a0. I'm too tired.
     temp=raw_appen(:,appen_indices(23));X(:,22)=1*strcmp(temp,'a0')+0*strcmp(temp,'a1')+0*strcmp(temp,'a2');
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in questions on English proficiency (Q5) = ' num2str(sum(X(:,22)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistake in question on English proficiency (Q5) = ' num2str(sum(X(:,22)<=0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that made mistakes in any questions on English proficiency = ' num2str(sum(X(:,18)+X(:,19)+X(:,20)+X(:,21)+X(:,22)<5))])
     % Set negative answers as NaN
     X(X<0)=NaN;
     %% Survey time
