@@ -6,10 +6,12 @@ clear all;close all;clc; %#ok<*CLALL>
 %% ************************************************************************
 N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
+N_SUB = 20;       % number of top and bottom stimuli to show in
+                  % barplots
 STEP_COLOUR = 5;  % step for traversing over colourmap
-COLOUR_SAME_EHMI = false;  % flag for colouring eHMI in ES/EN on figures
+COLOUR_SAME_EHMI = true;  % flag for colouring eHMI in ES/EN on figures
                            % with all eHMI
-SAVE_FIGURES = false;       % flag for saving figures as EPS and JPG files
+SAVE_FIGURES = true;       % flag for saving figures as EPS and JPG files
 
 %% ************************************************************************
 %% Load config
@@ -147,51 +149,40 @@ if SAVE_FIGURES
     export_figure(gcf, [config.path_figures filesep 'median-cross'], 'jpg')
 end
 
-%% Median willingness to cross for limited number of  stimuli
+%% Median willingness to cross for limited number of stimuli
 figure;
+% bottom N_SUB
+subplot(1,2,1);
 hold on;
 grid on;
 box on;
-for i=1:N_STIMULI % loop over eHMIs
-    bar_obj(i) = bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
+for i=1:1+N_SUB % loop over eHMIs
+    bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
 end
-% assign colours to pairs of EN and ES eHMIs
-if COLOUR_SAME_EHMI
-    cmap = colormap(jet); % choose colormap
-    counter_colour = 1;  % counter for assigned colours
-    for i=1:N_STIMULI % loop over eHMIs
-        % get index in cell array
-        ehmi = strtrim(eHMI_text_MedSorted(i,:));
-        % check if there is Spanish translation
-        if find(ismember(mapping{:,10}, ehmi))
-            index_es = find(ismember(mapping{:,10}, ehmi));
-            ehmi_es = char(mapping{index_es,2});
-            % find index of ES eHMI
-            for j=1:N_STIMULI % loop over eHMIs
-                ehmi_tick_trimmed = strtrim(eHMI_text_MedSorted(j,:));
-                if strcmp(ehmi_es, ehmi_tick_trimmed)
-                    i_es = j;
-                    break;
-                end
-            end
-            % set colour
-            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
-            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
-            counter_colour = counter_colour + 5;
-        end
-    end
+set(gca,'xlim',[1 1+N_SUB+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:1+N_SUB])
+set(gca,'xticklabel',eHMI_text_MedSorted(1:1+N_SUB,:))
+xlabel('eHMI');
+ylabel('Median willingness to cross (%)'
+% top N_SUB
+subplot(1,2,2);
+hold on;
+grid on;
+box on;
+for i=N_STIMULI-N_SUB:N_STIMULI % loop over eHMIs
+    bar(i,1+RPoMedSorted(i),'barwidth',1,'facecolor','b','edgecolor','k');
 end
-set(gca,'xlim',[-1 N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[1:1:N_STIMULI])
-set(gca,'xticklabel',eHMI_text_MedSorted)
+set(gca,'xlim',[N_STIMULI-N_SUB N_STIMULI+1],'tickdir','out','ylim',[0 100],'xtick',[N_STIMULI-N_SUB:1:N_STIMULI])
+set(gca,'xticklabel',eHMI_text_MedSorted(N_STIMULI-N_SUB:N_STIMULI,:))
 xlabel('eHMI');
 ylabel('Median willingness to cross (%)')
+
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
 set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
 if SAVE_FIGURES
-    export_figure(gcf, [config.path_output filesep 'median-cross-top-bottom'], 'epsc')
-    export_figure(gcf, [config.path_figures filesep 'median-cross-top-bottom'], 'jpg')
+    export_figure(gcf, [config.path_output filesep 'median-cross-subgroup'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'median-cross-subgroup'], 'jpg')
 end
 
 %% Mean willingness to cross for all stimuli
@@ -404,7 +395,7 @@ for i=1:47
     scatter2.MarkerFaceAlpha = 0.5;
 end
     plot([0 100],[0 100],'b--')
-legend('Participants with preffered language of Spanish','Participants with preffered language of English','location','southeast')
+legend('Participants with preferred language of Spanish','Participants with preferred language of English','location','southeast')
 xlabel('Mean willingness to cross - English text');
 ylabel('Mean willingness to cross - Spanish text');
 h=findobj('FontName','Helvetica');

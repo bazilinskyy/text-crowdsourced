@@ -13,13 +13,16 @@ Code for analysis is written in MATLAB. No configuration is needed. The project 
 Figures are saved in `text-crowdsourced/_output`.
 
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
-Median willingness to cross.
+Median willingness to cross. Colours show stimuli that were presented in both English and Spanish.
+
+![median willingness to cross for top and bottom 20](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-subgroup.jpg?raw=true)
+Median willingness to cross for top and bottom 20 eHMIs.
 
 ![mean willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/mean-cross.jpg?raw=true)
-Mean willingness to cross.
+Mean willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
-Standard deviation of willingness to cross.
+Standard deviation of willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 
 ![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
 Median willingness to cross for eHMIs presented in both English and Spanish.
