@@ -134,3 +134,8 @@ textehmi/analysis/*.xlsx
 textehmi/analysis/*.json
 textehmi/analysis/*.asv
 textehmi/analysis/*.mat
+textehmi/analysis/*.p
+
+# Exception for subdirectory for storing figures in output
+!_output/.gitkeep
+!_output/figures/.gitkeep
