@@ -14,7 +14,7 @@ Code for creation of stimuli and QA is written in Python. The project is tested 
 For QA, the API key of appen needs to be places in file `text-crowdsourced/secret`. The file needs to be formatted as `text-crowdsourced/default.secret`.
 
 ## Analysis
-Code for analysis is written in MATLAB. No configuration is needed. To run the analysis code, a config file needs to be created (as described [lower](https://github.com/bazilinskyy/text-crowdsourced#configuration-of-analysis)) and file `text-crowdsourced/analysis/analysis.m` need to be run. The project was tested with MATLAB 2021b.
+Code for analysis is written in MATLAB. No configuration is needed. To run the analysis code, a config file needs to be created (as described [lower](https://github.com/bazilinskyy/text-crowdsourced#configuration-of-analysis)) and file `text-crowdsourced/analysis/analysis.m` need to be run. The project was tested with MATLAB 2021b. A number of CSV files used data processing are saved in `text-crowdsourced/_output`. Visualisations of all data are saved in `text-crowdsourced/_output/figures/`.
 
 ## Implementation on heroku
 We use [heroku](https://www.heroku.com/) to host the node.js implementation. The demo of the implementation may be viewed [here](https://text-crowdsourced.herokuapp.com/?debug=1&save_data=0). Implementation supports images.
