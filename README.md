@@ -17,7 +17,7 @@ For QA, the API key of appen needs to be places in file `text-crowdsourced/secre
 Code for analysis is written in MATLAB. No configuration is needed. To run the analysis code, a config file needs to be created (as described [lower](https://github.com/bazilinskyy/text-crowdsourced#configuration-of-analysis)) and file `text-crowdsourced/analysis/analysis.m` need to be run. The project was tested with MATLAB 2021b.
 
 ## Implementation on heroku
-We use [Heroku](https://www.heroku.com/) to host the node.js implementation. The demo of the implementation may be viewed [here](https://text-crowdsourced.herokuapp.com/?debug=1&save_data=0). Implementation supports images.
+We use [heroku](https://www.heroku.com/) to host the node.js implementation. The demo of the implementation may be viewed [here](https://text-crowdsourced.herokuapp.com/?debug=1&save_data=0). Implementation supports images.
 
 ## Crowdsourcing job on appen
 We use [appen](http://appen.com) to run a crowdsourcing job. You need to create a client account to be able to create a launch crowdsourcing job. Preview of the appen job used in this experiment is available [here](https://view.appen.io/channels/cf_internal/jobs/1884388/editor_preview?token=65NVm9aKVsyz_jlitEr3bA).
