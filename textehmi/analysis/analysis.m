@@ -21,33 +21,33 @@ config = jsondecode(fileread('../../config'));
 %% Process data
 %% ************************************************************************
 % indices to traverse in appen data
-appen_indices = [16,... % 1. Instructions understood
-                 37,... % 2. Gender
-                 36,... % 3. Age
-                 14,... % 4. Age of obtaining driver's license
-                 40,... % 5. Primary mode of transportation
-                 31,... % 6. How many times in past 12 months did you drive a vehicle
-                 13,... % 7. Mileage
-                 17,... % 8. Number of accidents
-                 9,...  % Country
-                 18,... % 9. DBQ1
-                 19,... % 10. DBQ1
-                 20,... % 11. DBQ2
-                 21,... % 12. DBQ3
-                 22,... % 13. DBQ4
-                 23,... % 14. DBQ5
-                 24,... % 15. DBQ6
-                 38,... % 16. Knowledge of English
-                 39,... % 17. Knowledge of Spanish
-                 15,... % 18. English 1
-                 35,... % 19. English 2
-                 25,... % 20. English 3
-                 26,... % 21. English 4
-                 33,... % 22. English 5
-                 4,...  % 23. Start
-                 2,...  % 24. End
-                 8,...  % 321. Worker id
-                 34];   % worker_code
+appen_indices = [19,... % 1. Instructions understood
+                 39,... % 2. Gender
+                 38,... % 3. Age
+                 17,... % 4. Age of obtaining driver's license
+                 42,... % 5. Primary mode of transportation
+                 34,... % 6. How many times in past 12 months did you drive a vehicle
+                 16,... % 7. Mileage
+                 20,... % 8. Number of accidents
+                 12,...  % Country
+                 21,... % 9. DBQ1
+                 22,... % 10. DBQ2
+                 23,... % 11. DBQ3
+                 24,... % 12. DBQ4
+                 25,... % 13. DBQ5
+                 26,... % 14. DBQ6
+                 27,... % 15. DBQ7
+                 40,... % 16. Knowledge of English
+                 41,... % 17. Knowledge of Spanish
+                 18,... % 18. English 1
+                 37,... % 19. English 2
+                 28,... % 20. English 3
+                 29,... % 21. English 4
+                 36,... % 22. English 5
+                 7,...  % 23. Start
+                 5,...  % 24. End
+                 11,...  % 321. Worker id
+                 2];   % worker_code
 [X, Country] = process_experiment(config.file_appen, ...
                                   appen_indices, ...
                                   config.file_heroku, ...

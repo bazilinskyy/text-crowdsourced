@@ -45,3 +45,4 @@ from .logmod import logs  # noqa E402
 from . import common  # noqa E402
 from . import settings  # noqa E402
 from . import stimuli  # noqa E402
+from . import analysis  # noqa E402
