@@ -122,6 +122,8 @@ secret
 # Ignore all files starting with an underscore.
 **/_*
 !__init__.py
+!_output/
+# !_output/figures/.gitkeep
 
 # Pickle files
 textehmi/analysis/*.p
@@ -137,5 +139,4 @@ textehmi/analysis/*.mat
 textehmi/analysis/*.p
 
 # Exception for subdirectory for storing figures in output
-!_output/.gitkeep
-!_output/figures/.gitkeep
+
