@@ -11,12 +11,12 @@ N_SUB = 20;       % number of top and bottom stimuli to show in
 STEP_COLOUR = 5;  % stepa for traversing over colourmap
 COLOUR_SAME_EHMI = true;  % flag for colouring eHMI in ES/EN on figures
                           % with all eHMI
-set(0, 'DefaultFigurePosition', [5 60  1920/2 1080/2]);
+
 %% ************************************************************************
 %% Load config
 %% ************************************************************************
 config = jsondecode(fileread('../../config'));
-%C:\Users\jcfde\Replication Dropbox\Vidi projects\CS text\Data
+
 %% ************************************************************************
 %% Process data
 %% ************************************************************************
@@ -59,6 +59,7 @@ mapping = readtable(config.mapping);
 %% ************************************************************************
 %% OUTPUT
 %% ************************************************************************
+set(0, 'DefaultFigurePosition', [5 60  1920/2 1080/2]);
 opengl hardware
 %% Prepare data
 RT = X(:, 27:106);       % time used to press the key
@@ -279,7 +280,7 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 end
 
-%% Message perspective graph (RECOMMEND: NOT INCLUDE IN PAPER; DOES NOT ADD INFO COMPARED TO THE TEXT SCATTER GRAPH)
+%% Message perspective graph
 figure;hold on;grid on
 clear h; % empty h object to store colour for the legend
 ego=find(mapping{:,7}==1 & mapping{:,8}==0);
@@ -339,7 +340,6 @@ set(gca, ...
     'xlim',[10 85])
 
 %% Display correlation matrices at the level of videos (RECOMMEND: INCLUDE IN PAPER; ONLY FIRST ONE?)
-
 XCM=[abs(50-nanmean(RPo))' nanmedian(RTo)' mapping{:,[3 7 8]}];
 disp('Correlation matrix all participants')
 disp(round(corr(XCM),2))
@@ -486,6 +486,18 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'corrplot'], 'jpg')
 end
 
+%% Information on browser language
+disp('Number of participants (1) US & non-es browser, (2) VE & non-es browser, (3) US & es browser, (4) VE & es_browser')
+disp([sum(contains(Country,'US') & lang_es==0) sum(contains(Country,'VE') & lang_es==0) sum(contains(Country,'US') & lang_es==1) sum(contains(Country,'VE') & lang_es==1)])
+
+g1=contains(Country,'VE');
+g2=contains(Country,'IN');
+disp([ sum(g1) sum(g2)
+    nanmedian(X(g1,26)) nanmedian(X(g2,26)) % survey duration
+   nanmean(X(g1,3)) nanmean(X(g2,3)) % mean age 
+ 100*(-1+nanmean(X(g1,2))) 100*(-1+nanmean(X(g2,2))) % percentage males
+mean(X(g1,5)==1) mean(X(g2,5)==1)]) % percentage of participants with primary mode of transport = private vehicle
+
 %% ************************************************************************
 %% Export of overview of eHMIs to csv
 %% ************************************************************************
@@ -502,15 +514,3 @@ writetable(t,[config.path_output filesep 'ehmis.csv']);
 writetable(t_med,[config.path_output filesep 'ehmis_med.csv']);
 writetable(t_mean,[config.path_output filesep 'ehmis_mean.csv']);
 writetable(t_std,[config.path_output filesep 'ehmis_std.csv']);
-
-%%
-disp('Number of participants (1) US & non-es browser, (2) VE & non-es browser, (3) US & es browser, (4) VE & es_browser')
-disp([sum(contains(Country,'US') & lang_es==0) sum(contains(Country,'VE') & lang_es==0) sum(contains(Country,'US') & lang_es==1) sum(contains(Country,'VE') & lang_es==1)])
-
-g1=contains(Country,'VE');
-g2=contains(Country,'IN');
-disp([ sum(g1) sum(g2)
-    nanmedian(X(g1,26)) nanmedian(X(g2,26)) % survey duration
-   nanmean(X(g1,3)) nanmean(X(g2,3)) % mean age 
- 100*(-1+nanmean(X(g1,2))) 100*(-1+nanmean(X(g2,2))) % percentage males
-mean(X(g1,5)==1) mean(X(g2,5)==1)]) % percentage of participants with primary mode of transport = private vehicle
