@@ -160,7 +160,7 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     %% Output with statistics and filtering information
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents who did not read instructions = ' num2str(length(invalid1))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents under 18 = ' num2str(length(invalid2))])
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents that took less than 300 s = ' num2str(length(invalid3))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents who took less than 300 s = ' num2str(length(invalid3))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of responses coming from the same IP = ' num2str(length(invalid4))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of rows in keypress data not matched:  ' num2str(length(invalid5))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of respondents removed = ' num2str(length(invalid))])
