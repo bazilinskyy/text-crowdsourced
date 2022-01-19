@@ -1,4 +1,4 @@
-# Analysing crossing behaviour of a pedestrian with an automated car and other pedestrian in the traffic scene
+# Analysing pedestrian's willingness to cross in front of an automated car with a textual external Human-Machine Interface (eHMI)
 This project defines a framework for the analysis of crossing behaviour in the interaction between a pedestrian and an automated vehicle with a textual eHMI using a crowdsourcing approach. The jsPsych framework is used to for the frontend. In the description below, it is assumed that the repo is stored in the folder `text-crowdsourced`. Terminal commands lower assume macOS.
 
 ## Citation
