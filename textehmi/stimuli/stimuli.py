@@ -13,7 +13,7 @@ logger = te.CustomLogger(__name__)  # use custom logger
 
 class Stimuli:
     # pandas dataframe with mapping
-    mapping = pd.read_csv(te.common.get_configs('mapping_stimuli'))
+    mapping = pd.read_csv(te.common.get_configs('mapping'))
 
     def __init__(self):
         pass
@@ -28,7 +28,7 @@ class Stimuli:
             save_file (bool, optional): flag for saving an html file with plot.
         """
         # load mapping
-        df = pd.read_csv(te.common.get_configs('mapping_stimuli'))
+        df = pd.read_csv(te.common.get_configs('mapping'))
         # load image with eHMI
         for index, row in df.iterrows():
             logger.info('Creating stimulus for message {}.', row['text'])
