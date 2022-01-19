@@ -30,11 +30,11 @@ Data from appen is anonymised in the following way:
 1. IP addresses are assigned to a mask starting from `0.0.0.0` and incrementing by 1 for each unique IP address (e.g., the 257th IP address would be masked as `0.0.0.256`).
 2. IDs are anonymised by subtracting the given ID from `config.mask_id`.
 
-### Visualisation
-Figures are saved in `text-crowdsourced/_output`.
+### Output
+Figures are saved in `text-crowdsourced/_output/figures`.
 
-![median willingness to cross response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
-Median willingness to cross over median response time. Colours denote the type of eHMIs: black=allocentric, greed=egocentric, red=other.
+![median willingness to cross response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-response-time.jpg?raw=true)
+Median willingness to cross over median response time. Colours denote the type of eHMIs: black=allocentric, green=egocentric, red=other.
 
 ![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
 Median willingness to cross for eHMIs presented in both English and Spanish.
@@ -48,9 +48,6 @@ Mean willingness to cross. Colours show stimuli that were presented in both Engl
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
 Standard deviation of willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 
-![median willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-usa-ven.jpg?raw=true)
-Median willingness to cross for participants from USA and Venezuela.
-
 ![response willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-usa-ven.jpg?raw=true)
 Median response time for participants from USA and Venezuela.
 
@@ -59,6 +56,8 @@ Median willingness related to the length of the eHMI.
 
 ![correlation plot](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/corrplot.jpg?raw=true)
 Correlation plot.
+
+CSV files with eHMIs sorted by median/mean/STD willingness to cross are saved in `text-crowdsourced/_output`.
 
 ### Configuration of analysis
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:
