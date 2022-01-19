@@ -67,11 +67,12 @@ CSV files with eHMIs sorted by median/mean/STD willingness to cross are saved in
 ### Configuration of analysis
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:
 * `appen_job`: ID of the appen job.
+* `mask_id`: number for masking worker IDs in appen data.
+* `file_cheaters`: csv file with cheaters for flagging.
 * `file_heroku`: file with data from heroku.
 * `file_appen`: file with data from appen.
-* `file_cheaters`: csv file with cheaters for flagging.
 * `path_stimuli`: path with stimuli.
 * `mapping`: csv file with mapping of stimuli.
-* `path_figures`: path for outputting figures in the EPS format.
+* `path_output`: path for output (figures, csv files).
 * `path_figures_readme`: path for outputting figures in the JPG format.
 * `save_figures`: flag for saving figures as EPS and JPG files.
