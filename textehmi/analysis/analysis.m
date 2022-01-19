@@ -334,13 +334,13 @@ legend(h, {'eHMIs in English' 'eHMIs in Spanish'}, ...
        'autoupdate', 'off', ...
        'location', 'northwest')
 plot([0 100], [0 100], 'b--')
-xlabel('Median response time - Participants from USA');
-ylabel('Median response time - Participants from Venezuela');
+xlabel('Median response time - participants from USA');
+ylabel('Median response time - participants from Venezuela');
 h=findobj('FontName', 'Helvetica');
 set(h, 'FontSize', 20, 'Fontname','Arial')
 set(gca, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [2000 6000], ...
+    'xlim', [2500 5500], ...
     'ylim', [3000 7000])
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
@@ -360,14 +360,14 @@ for i=1:227 % English eHMIs
                           'markeredgecolor', 'none');
     scatter_obj.MarkerFaceAlpha = 0.3;
 end
-plot([0 100],[0 100],'b--')
+plot([0 100], [0 100],'b--')
 xlabel('Number of characters');
 ylabel('Median response time');
 h=findobj('FontName', 'Helvetica');
 set(h, 'FontSize', 20, 'Fontname', 'Arial')
 set(gca, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'ylim', [2000 10000])
+    'ylim', [3000 6500])
 %axis equal
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
