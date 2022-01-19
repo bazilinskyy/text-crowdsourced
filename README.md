@@ -2,6 +2,11 @@
 
 This project defines a framework for the analysis of crossing behaviour in the interaction between a pedestrian and an automated vehicle with a textual eHMI using a crowdsourcing approach. The jsPsych framework is used to for the frontend. In the description below, it is assumed that the repo is stored in the folder `text-crowdsourced`. Terminal commands lower assume macOS.
 
+## Citation
+If you use the framework for academic work please cite the following paper.
+
+> Bazilinskyy, P., Dodou, D., & De Winter, J. C. F. (2022). Crowdsourced assessment of the suitability of 227 textual eHMIs for a crossing scenario. Proceedings of AHFE 2022. Available at TBC
+
 ## Setup
 Code for creation of stimuli is written in Python. The project is tested with Python 3.8.5. To setup the environment run these two commands in a parent folder of the downloaded repository (replace `/` with `\` and possibly add `--user` if on Windows:
 - `pip install -e text-crowdsourced` will setup the project as a package accessible in the environment.
