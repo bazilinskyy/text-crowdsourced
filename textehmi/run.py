@@ -12,8 +12,8 @@ SAVE_P = True  # save pickle files with data
 LOAD_P = False  # load pickle files with data
 SAVE_CSV = True  # load csv files with data
 CREATE_STIMULI = False  # create stimuli based on base image
-CLEAN_DATA = True  # clean Appen data
-REJECT_CHEATERS = False  # reject cheaters on appen
+CLEAN_DATA = True  # clean appen data
+REJECT_CHEATERS = True  # reject cheaters on appen
 
 if __name__ == '__main__':
     # create stimuli

@@ -33,20 +33,20 @@ Data from appen is anonymised in the following way:
 ### Visualisation
 Figures are saved in `text-crowdsourced/_output`.
 
+![median willingness to cross response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
+Median willingness to cross over median response time. Colours denote the type of eHMIs: black=allocentric, greed=egocentric, red=other.
+
+![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
+Median willingness to cross for eHMIs presented in both English and Spanish.
+
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
 Median willingness to cross. Colours show stimuli that were presented in both English and Spanish.
-
-![median willingness to cross for top and bottom 20](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-subgroup.jpg?raw=true)
-Median willingness to cross for top and bottom 20 eHMIs.
 
 ![mean willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/mean-cross.jpg?raw=true)
 Mean willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
 Standard deviation of willingness to cross. Colours show stimuli that were presented in both English and Spanish.
-
-![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
-Median willingness to cross for eHMIs presented in both English and Spanish.
 
 ![median willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-usa-ven.jpg?raw=true)
 Median willingness to cross for participants from USA and Venezuela.
