@@ -38,8 +38,8 @@ Data from appen is anonymised in the following way:
 ### Output
 Figures are saved in `text-crowdsourced/_output/figures`.
 
-![median willingness to cross response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-response-time.jpg?raw=true)
-Median willingness to cross over median response time. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
+![median willingness to mean willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-mean-cross.jpg?raw=true)
+Median willingness to cross over mean willingness to cross. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
 
 ![median willingness to cross sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-sd-cross.jpg?raw=true)
 Median willingness to cross over SD willingness to cross. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
