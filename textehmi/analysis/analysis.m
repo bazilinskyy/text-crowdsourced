@@ -244,9 +244,9 @@ h = textscatter([nanmean(RPo(:,1:180))' nanmedian(RTo(:,1:180))'], ...
                 table2cell(eHMI_text(1:180, :)), ...
                 'markersize', 22, ...
                 'colordata', cd, ...
-                'TextDensityPercentage', 75, ...
+                'TextDensityPercentage', 100, ...
                 'maxtextlength', 100, ...
-                'fontsize', 13);
+                'fontsize', 10);
 xlabel('Mean willingness to cross (%)');
 ylabel('Median response time (ms)');
 set(gca, 'Fontsize', 20, ...
@@ -261,6 +261,56 @@ if config.save_figures
     export_figure(gcf, [config.path_figures ...
                         filesep 'median-cross-response-time'], 'jpg')
 end
+%%
+[RPo_mean_sorted,RPO_mean_sorted_o]=sort(nanmean(RPo),'ascend');
+
+cd=NaN(size(RPo,2),3);
+cd(ego,:)=repmat([0 .9 0], length(ego), 1);
+cd(allo,:)=repmat([0.8 0.8 0.8], length(allo), 1);
+cd(other,:)=repmat([1 .5 0], length(other), 1);
+
+figure
+subplot(1,4,1)
+b=barh(RPo_mean_sorted(1:114),'facecolor','flat');
+b.CData=cd(RPO_mean_sorted_o(1:114),:);
+for i=1:114
+    text(1,i,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
+end
+
+set(gca,'xlim',[0 85])
+set(gca,'ydir','reverse')
+set(gca,'pos',[0.01 0.045 0.22 0.94])
+set(gca,'yticklabel',{})
+set(gca,'ticklength',[0.005 0])
+xlabel('Mean willingness to cross (%)')
+
+subplot(1,4,2)
+b=barh(RPo_mean_sorted(115:227),'facecolor',[.8 .8 .8],'facecolor','flat');
+b.CData=cd(RPO_mean_sorted_o(115:227),:);
+for i=115:227
+    text(1,i-114,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
+end
+
+set(gca,'xlim',[0 85])
+set(gca,'ydir','reverse')
+set(gca,'pos',[0.26 0.045 0.22 0.94])
+set(gca,'yticklabel',{})
+set(gca,'ticklength',[0.005 0])
+
+xlabel('Mean willingness to cross (%)')
+
+%subplot(1,4,3)
+%b=barh(RPo_mean_sorted(153:227),'facecolor',[.8 .8 .8],'facecolor','flat');
+%b.CData=cd(RPO_mean_sorted_o(153:227),:);
+%for i=153:227
+%    text(1,i-152,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',8)
+%end
+%set(gca,'xlim',[0 100])
+%set(gca,'ydir','reverse')
+%set(gca,'pos',[0.51 0.045 0.22 0.94])
+%set(gca,'yticklabel',{})
+%set(gca,'ticklength',[0.005 0])
+%xlabel('Mean willingness to cross (%)')
 %% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross and median response time
 figure;hold on;box on
 cd=NaN(180,3);
@@ -477,10 +527,10 @@ disp(['Correlation matrix Non-Spanish-language participants, ' ...
 disp(round(corr(XCM),2))
 
 %%
-%crossego=find(mapping{1:180,7}==1&mapping{1:180,5}==1);
-%dontcrossego=find(mapping{1:180,7}==1&mapping{1:180,5}==0);
-crossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'>50);
-dontcrossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'<50);
+crossego=find(mapping{1:180,7}==1&mapping{1:180,5}==1);
+dontcrossego=find(mapping{1:180,7}==1&mapping{1:180,5}==0);
+%rossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'>50);
+%dontcrossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'<50);
 Xp=[lang_es X(:,[16 17]) nanmean(RPo(:,crossego),2)-nanmean(RPo(:,dontcrossego), 2) ];
 
 %% Information on browser language
