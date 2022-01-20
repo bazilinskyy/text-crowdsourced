@@ -62,6 +62,7 @@ mapping = readtable(config.mapping);
 %% ************************************************************************
 set(0, 'DefaultFigurePosition', [5 60  1920/2 1080/2]);
 opengl hardware
+
 %% Prepare data
 RT = X(:, 27:106);       % time used to press the key
 RP = X(:, 107:186);      % response from the slider
@@ -74,7 +75,6 @@ for i=1:size(RP,1) % loop over pp
     RPo(i,imageid(i,:)+1)=RP(i,:);
     RTo(i,imageid(i,:)+1)=RT(i,:);
 end
-
 % Median willingness to cross
 [RPoMed,RPoMedVE,RPoMedUS,RToMedVE,RToMedUS]=deal(NaN(N_STIMULI,1));
 for i=1:size(RPo,2)
@@ -91,7 +91,6 @@ for i=1:size(RPo,2)
 end
 [RPoMedSorted,b]=sort(RPoMed);
 eHMI_text_MedSorted=char(eHMI_text{b,:});
-
 % Mean willingness to cross
 [RPoMean,RPoMeanVE,RPoMeanUS,RToMeanVE,RToMeanUS,o,NN]=deal(NaN(N_STIMULI,1));
 for i=1:size(RPo,2)
@@ -108,7 +107,6 @@ for i=1:size(RPo,2)
 end
 [RPoMeanSorted,b]=sort(RPoMean);
 eHMI_text_MeanSorted=char(eHMI_text{b,:});
-
 % STD willingness to cross
 RPoSTD=deal(NaN(N_STIMULI,1));
 for i=1:size(RPo,2)
@@ -116,7 +114,6 @@ for i=1:size(RPo,2)
 end
 [RPoSTDSorted, bs]=sort(RPoSTD);
 eHMI_text_STDSorted=char(eHMI_text{bs,:});
-
 % Types of eHMIs
 ego=find(mapping{:,7}==1 & mapping{:,8}==0);
 allo=find(mapping{:,7}==0 & mapping{:,8}==1);
@@ -163,12 +160,12 @@ set(gca, 'xlim', [-1 N_STIMULI+1], ...
     'tickdir', 'out', ...
     'ylim', [0 100], ...
     'xtick', [1:1:N_STIMULI], ...
-    'xticklabel', eHMI_text_MedSorted)
+    'xticklabel', eHMI_text_MedSorted, ...
+    'LooseInset',[0.01 0.01 0.01 0.01])
 xlabel('eHMI');
 ylabel('Median willingness to cross (%)')
 h=findobj('FontName','Helvetica');
 set(h,'FontSize',8,'Fontname','Arial')
-set(gca,'LooseInset',[0.01 0.01 0.01 0.01])
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -230,7 +227,8 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
 end
 
-%% Text scatter plot of English-text eHMIs. Mean willingness to cross and median response time
+%% Text scatter plot of English-text eHMIs. Mean willingness to cross vs
+% median response time
 figure;hold on;box on
 cd=NaN(size(RPo,2),3);
 cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
@@ -253,7 +251,8 @@ set(gca, 'Fontsize', 20, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
     'xlim', [13.5 86.5], ...
     'ylim', [3400 6400])
-legend('Egocentric','Allocentric','Egocentric and allocentric','location','northwest')
+legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
+       'location','northwest')
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -261,7 +260,9 @@ if config.save_figures
     export_figure(gcf, [config.path_figures ...
                         filesep 'median-cross-response-time'], 'jpg')
 end
-%% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross and median response time
+
+%% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross
+% and median response time
 figure;hold on;box on
 cd=NaN(180,3);
 cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
@@ -283,13 +284,14 @@ ylabel('\it{SD}\rm willingness to cross (%)');
 set(gca, 'Fontsize', 20, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
     'xlim', [13.5 86.5])
-legend('Egocentric','Allocentric','Egocentric and allocentric','location','southwest')
+legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
+       'location', 'southwest')
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-response-time'], 'epsc')
+                        filesep 'median-cross-sd-cross'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-response-time'], 'jpg')
+                        filesep 'median-cross-sd-cross'], 'jpg')
 end
 
 %% Response time USA/VEN
@@ -319,8 +321,7 @@ xlabel('Median response time - participants from USA');
 ylabel('Median response time - participants from Venezuela');
 h=findobj('FontName', 'Helvetica');
 set(h, 'FontSize', 20, 'Fontname','Arial')
-set(gca, ...
-    'LooseInset', [0.01 0.01 0.01 0.01], ...
+set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
     'xlim', [2500 5500], ...
     'ylim', [3000 7000])
 % maximise and export as eps and jpg (for readme)
@@ -346,10 +347,8 @@ xlabel('Number of characters');
 ylabel('Median response time');
 h=findobj('FontName', 'Helvetica');
 set(h, 'FontSize', 20, 'Fontname', 'Arial')
-set(gca, ...
-    'LooseInset', [0.01 0.01 0.01 0.01], ...
+set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
     'ylim', [3000 6500])
-%axis equal
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -394,8 +393,7 @@ xlabel('Mean willingness to cross - eHMI in English');
 ylabel('Mean willingness to cross - eHMI in Spanish');
 h=findobj('FontName', 'Helvetica');
 set(h,'FontSize', 20, 'Fontname', 'Arial')
-set(gca, ...
-    'LooseInset', [0.01 0.01 0.01 0.01], ...
+set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
     'xlim', [0 100], ...
     'ylim', [0 100], ...
     'pos', [0.25 0.08 0.5 0.9])
@@ -409,7 +407,6 @@ end
 
 %% Correlation matrix and plot
 % fetch relevant columns from X for correlation matrix 
-
 CMATR = X(:,[2:4 6:17]);
 % compute correlations
 [c_CMATR, p_CMATR] = corr(CMATR, 'type', 'spearman', 'rows', 'pairwise');

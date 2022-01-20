@@ -39,7 +39,10 @@ Data from appen is anonymised in the following way:
 Figures are saved in `text-crowdsourced/_output/figures`.
 
 ![median willingness to cross response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-response-time.jpg?raw=true)
-Median willingness to cross over median response time. Colours denote the type of eHMIs: black=allocentric, green=egocentric, red=other.
+Median willingness to cross over median response time. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
+
+![median willingness to cross sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-sd-cross.jpg?raw=true)
+Median willingness to cross over SD willingness to cross. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
 
 ![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
 Median willingness to cross for eHMIs presented in both English and Spanish.
@@ -62,7 +65,7 @@ Median willingness related to the length of the eHMI.
 ![correlation plot](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/corrplot.jpg?raw=true)
 Correlation plot.
 
-CSV files with eHMIs sorted by median/mean/STD willingness to cross are saved in `text-crowdsourced/_output`.
+CSV files with eHMIs sorted by median/mean/SD willingness to cross are saved in `text-crowdsourced/_output`.
 
 ### Configuration of analysis
 Configuration of analysis needs to be defined in `text-crowdsourced/config`. Please use the `default.config` file for the required structure of the file. If no custom config file is provided, `default.config` is used. The config file has the following parameters:
