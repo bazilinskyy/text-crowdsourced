@@ -119,8 +119,8 @@ eHMI_text_STDSorted=char(eHMI_text{bs,:});
 
 % Types of eHMIs
 ego=find(mapping{:,7}==1 & mapping{:,8}==0);
-notego=find(mapping{:,7}==0 & mapping{:,8}==1);
-other=find(~ismember(1:227, union(ego,notego)));
+allo=find(mapping{:,7}==0 & mapping{:,8}==1);
+other=find(~ismember(1:227, union(ego,allo)));
 
 %% Median willingness to cross for all stimuli
 figure;
@@ -230,79 +230,60 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
 end
 
-%% SD willingness to cross for all stimuli
-figure;
-hold on;
-box on;
-for i=1:N_STIMULI % loop over eHMIs
-    bar_obj(i) = bar(i, RPoSTDSorted(i), ...
-                     'barwidth', 1, ...
-                     'facecolor', 'b', ...
-                     'edgecolor','k');
-end
-% assign colours to pairs of EN and ES eHMIs
-if COLOUR_SAME_EHMI
-    cmap = colormap(jet); % choose colormap
-    counter_colour = 1;  % counter for assigned colours
-    for i=1:N_STIMULI % loop over eHMIs
-        % get index in cell array
-        ehmi = strtrim(eHMI_text_STDSorted(i,:));
-        % check if there is Spanish translation
-        if find(ismember(mapping{:,10}, ehmi))
-            index_es = find(ismember(mapping{:,10}, ehmi));
-            ehmi_es = char(mapping{index_es,2});
-            % find index of ES eHMI
-            for j=1:N_STIMULI % loop over eHMIs
-                ehmi_tick_trimmed = strtrim(eHMI_text_STDSorted(j,:));
-                if strcmp(ehmi_es, ehmi_tick_trimmed)
-                    i_es = j;
-                    break;
-                end
-            end
-            % set colour
-            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
-            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
-            counter_colour = counter_colour + STEP_COLOUR;
-        end
-    end
-end
-set(gca, 'xlim', [-1 N_STIMULI+1], ...
-    'tickdir', 'out', ...
-    'ylim', [0 40], ...
-    'xtick', [1:1:N_STIMULI], ...
-    'xticklabel', eHMI_text_STDSorted, ...
-    'LooseInset', [0.01 0.01 0.01 0.01])
-xlabel('eHMI')
-ylabel('\it{SD}\rm willingness to cross (%)')
-h=findobj('FontName', 'Helvetica');
-set(h,'FontSize', 8, 'Fontname', 'Arial')
-% maximise and export as eps and jpg (for readme)
-if config.save_figures
-    export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'sd-cross'], 'epsc')
-    export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
-end
-
-%% Text scatter plot of all eHMIs
-% TODO: add legend
-figure;
+%% Text scatter plot of English-text eHMIs. Mean willingness to cross and median response time
+figure;hold on;box on
 cd=NaN(size(RPo,2),3);
-cd(ego,:)=repmat([0 0.6 0], length(ego), 1);
-cd(notego,:)=repmat([0 0 0], length(notego), 1);
+cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
+cd(allo,:)=repmat([0 0 0], length(allo), 1);
 cd(other,:)=repmat([1 0 0], length(other), 1);
 cd=cd(1:180,:);
+plot(-10,-10,'o','markerfacecolor',cd(ego(1),:),'markersize',10)
+plot(-10,-10,'o','markerfacecolor',cd(allo(1),:),'markersize',10)
+plot(-10,-10,'o','markerfacecolor',cd(other(1),:),'markersize',10)
 h = textscatter([nanmean(RPo(:,1:180))' nanmedian(RTo(:,1:180))'], ...
                 table2cell(eHMI_text(1:180, :)), ...
-                'markersize', 20, ...
+                'markersize', 22, ...
                 'colordata', cd, ...
-                'TextDensityPercentage', 100, ...
-                'maxtextlength', 50, ...
-                'fontsize', 8);
+                'TextDensityPercentage', 75, ...
+                'maxtextlength', 100, ...
+                'fontsize', 13);
 xlabel('Mean willingness to cross (%)');
 ylabel('Median response time (ms)');
 set(gca, 'Fontsize', 20, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [10 85])
+    'xlim', [13.5 86.5], ...
+    'ylim', [3400 6400])
+legend('Egocentric','Allocentric','Egocentric and allocentric','location','northwest')
+% maximise and export as eps and jpg (for readme)
+if config.save_figures
+    export_figure(gcf, [config.path_output filesep 'figures' ...
+                        filesep 'median-cross-response-time'], 'epsc')
+    export_figure(gcf, [config.path_figures ...
+                        filesep 'median-cross-response-time'], 'jpg')
+end
+%% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross and median response time
+figure;hold on;box on
+cd=NaN(180,3);
+cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
+cd(allo,:)=repmat([0 0 0], length(allo), 1);
+cd(other,:)=repmat([1 0 0], length(other), 1);
+cd=cd(1:180,:);
+plot(-10,-10,'o','markerfacecolor',cd(ego(1),:),'markersize',10)
+plot(-10,-10,'o','markerfacecolor',cd(allo(1),:),'markersize',10)
+plot(-10,-10,'o','markerfacecolor',cd(other(1),:),'markersize',10)
+h = textscatter([nanmean(RPo(:,1:180))' nanstd(RPo(:,1:180))'], ...
+                table2cell(eHMI_text(1:180, :)), ...
+                'markersize', 22, ...
+                'colordata', cd, ...
+                'TextDensityPercentage', 75, ...
+                'maxtextlength', 100, ...
+                'fontsize', 13);
+xlabel('Mean willingness to cross (%)');
+ylabel('\it{SD}\rm willingness to cross (%)');
+set(gca, 'Fontsize', 20, ...
+    'LooseInset', [0.01 0.01 0.01 0.01], ...
+    'xlim', [13.5 86.5])
+legend('Egocentric','Allocentric','Egocentric and allocentric','location','southwest')
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -406,8 +387,8 @@ for i=1:47
     scatter2.MarkerFaceAlpha = 0.8;
 end
     plot([0 100],[0 100],'b--')
-legend('Participants with preferred language of Spanish', ...
-       'Participants with preferred language of English', ...
+legend('Participants with browser language Spanish', ...
+       'Participants with browser language English', ...
        'location','southeast')
 xlabel('Mean willingness to cross - eHMI in English');
 ylabel('Mean willingness to cross - eHMI in Spanish');
@@ -428,14 +409,14 @@ end
 
 %% Correlation matrix and plot
 % fetch relevant columns from X for correlation matrix 
-CMATR = X(:,[2:17, 23]);
+
+CMATR = X(:,[2:4 6:17]);
 % compute correlations
 [c_CMATR, p_CMATR] = corr(CMATR, 'type', 'spearman', 'rows', 'pairwise');
 % labels for output
 labels = {'Gend', ...
           'Age ', ...
           'Licen', ...
-          'Trans', ...
           'Drive', ...
           'Mile', ...
           'Accid', ...
@@ -447,8 +428,7 @@ labels = {'Gend', ...
           'DBQ6', ...
           'DBQ7', ...
           'EN', ...
-          'ES', ...
-          'ENQs'};
+          'ES'};
 % output of correlation matrix
 printmat(round(c_CMATR*100)/100, ...
          'Spearman correlation matrix', ...
@@ -458,7 +438,7 @@ printmat(round(c_CMATR*100)/100, ...
 clear gcf;  % clear from previous figure to handle saving of files
 figure;
 % TODO: remove title from figure
-[R,PValue] = corrplot(c_CMATR, ...
+[R,PValue] = corrplot(CMATR, ...
                       'type', 'spearman', ...
                       'rows', 'pairwise', ...
                       'varNames', labels, ...
@@ -475,7 +455,11 @@ set(h, 'Fontname','Arial')
 
 %% Display correlation matrices at the level of stimuli
 XCM=[abs(50-nanmean(RPo))' nanmedian(RTo)' mapping{:,[3 7 8]}];
-disp('Correlation matrix all participants')
+disp('Correlation matrix all participants, all eHMIs')
+disp(round(corr(XCM),2))
+
+XCM=[abs(50-nanmean(RPo(:,1:180)))' nanmedian(RTo(:,1:180))' mapping{1:180,[3 7 8]}];
+disp('Correlation matrix all participants, Enligh-text eHMIs')
 disp(round(corr(XCM),2))
 
 XCM=[abs(50-nanmean(RPo(lang_es==1,181:end)))' ...
@@ -491,6 +475,13 @@ XCM=[abs(50-nanmean(RPo(lang_es==0,1:180)))' ...
 disp(['Correlation matrix Non-Spanish-language participants, ' ...
       'English eHMI texts'])
 disp(round(corr(XCM),2))
+
+%%
+%crossego=find(mapping{1:180,7}==1&mapping{1:180,5}==1);
+%dontcrossego=find(mapping{1:180,7}==1&mapping{1:180,5}==0);
+crossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'>50);
+dontcrossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'<50);
+Xp=[lang_es X(:,[16 17]) nanmean(RPo(:,crossego),2)-nanmean(RPo(:,dontcrossego), 2) ];
 
 %% Information on browser language
 disp(['Number of participants (1) US & non-es browser, ' ...
