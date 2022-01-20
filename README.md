@@ -47,6 +47,9 @@ Median willingness to cross over SD willingness to cross. Colours denote the typ
 ![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
 Median willingness to cross for eHMIs presented in both English and Spanish.
 
+![mean willingness to cross on multiple columns](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/mean-cross-multiple-columns.jpg?raw=true)
+Mean willingness to cross.
+
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
 Median willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 

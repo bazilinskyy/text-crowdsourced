@@ -107,7 +107,7 @@ for i=1:size(RPo,2)
 end
 [RPoMeanSorted,b]=sort(RPoMean);
 eHMI_text_MeanSorted=char(eHMI_text{b,:});
-% STD willingness to cross
+% SD willingness to cross
 RPoSTD=deal(NaN(N_STIMULI,1));
 for i=1:size(RPo,2)
     RPoSTD(i)=nanstd(RPo(:,i));
@@ -227,6 +227,59 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'mean-cross'], 'jpg')
 end
 
+%% SD willingness to cross for all stimuli
+figure;
+hold on;
+box on;
+for i=1:N_STIMULI % loop over eHMIs
+    bar_obj(i) = bar(i, RPoSTDSorted(i), ...
+                     'barwidth', 1, ...
+                     'facecolor', 'b', ...
+                     'edgecolor','k');
+end
+% assign colours to pairs of EN and ES eHMIs
+if COLOUR_SAME_EHMI
+    cmap = colormap(jet); % choose colormap
+    counter_colour = 1;  % counter for assigned colours
+    for i=1:N_STIMULI % loop over eHMIs
+        % get index in cell array
+        ehmi = strtrim(eHMI_text_STDSorted(i,:));
+        % check if there is Spanish translation
+        if find(ismember(mapping{:,10}, ehmi))
+            index_es = find(ismember(mapping{:,10}, ehmi));
+            ehmi_es = char(mapping{index_es,2});
+            % find index of ES eHMI
+            for j=1:N_STIMULI % loop over eHMIs
+                ehmi_tick_trimmed = strtrim(eHMI_text_STDSorted(j,:));
+                if strcmp(ehmi_es, ehmi_tick_trimmed)
+                    i_es = j;
+                    break;
+                end
+            end
+            % set colour
+            set(bar_obj(i),'FaceColor', cmap(counter_colour,:));
+            set(bar_obj(i_es),'FaceColor', cmap(counter_colour,:));
+            counter_colour = counter_colour + STEP_COLOUR;
+        end
+    end
+end
+set(gca, 'xlim', [-1 N_STIMULI+1], ...
+    'tickdir', 'out', ...
+    'ylim', [0 40], ...
+    'xtick', [1:1:N_STIMULI], ...
+    'xticklabel', eHMI_text_STDSorted, ...
+    'LooseInset', [0.01 0.01 0.01 0.01])
+xlabel('eHMI')
+ylabel('\it{SD}\rm willingness to cross (%)')
+h=findobj('FontName', 'Helvetica');
+set(h,'FontSize', 8, 'Fontname', 'Arial')
+% maximise and export as eps and jpg (for readme)
+if config.save_figures
+    export_figure(gcf, [config.path_output filesep 'figures' ...
+                        filesep 'sd-cross'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
+end
+
 %% Text scatter plot of English-text eHMIs. Mean willingness to cross vs
 % median response time
 figure;hold on;box on
@@ -256,12 +309,12 @@ legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-response-time'], 'epsc')
+                        filesep 'median-cross-mean-cross'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-response-time'], 'jpg')
+                        filesep 'median-cross-mean-cross'], 'jpg')
 end
-<<<<<<< HEAD
-%%
+
+%% Multi-column barplot for mean willingness to cross
 [RPo_mean_sorted,RPO_mean_sorted_o]=sort(nanmean(RPo),'ascend');
 
 cd=NaN(size(RPo,2),3);
@@ -291,13 +344,13 @@ for i=115:227
     text(1,i-114,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
 end
 
-set(gca,'xlim',[0 85])
-set(gca,'ydir','reverse')
-set(gca,'pos',[0.26 0.045 0.22 0.94])
-set(gca,'yticklabel',{})
-set(gca,'ticklength',[0.005 0])
-
+set(gca,'xlim',[0 85], ...
+    'pos',[0.26 0.045 0.22 0.94], ...
+    'yticklabel', {}, ...
+    'ticklength', [0.005 0], ...
+    'ydir', 'reverse')
 xlabel('Mean willingness to cross (%)')
+
 
 %subplot(1,4,3)
 %b=barh(RPo_mean_sorted(153:227),'facecolor',[.8 .8 .8],'facecolor','flat');
@@ -311,12 +364,17 @@ xlabel('Mean willingness to cross (%)')
 %set(gca,'yticklabel',{})
 %set(gca,'ticklength',[0.005 0])
 %xlabel('Mean willingness to cross (%)')
-%% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross and median response time
-=======
+
+% maximise and export as eps and jpg (for readme)
+if config.save_figures
+    export_figure(gcf, [config.path_output filesep 'figures' ...
+                        filesep 'mean-cross-multiple-columns'], 'epsc')
+    export_figure(gcf, [config.path_figures ...
+                        filesep 'mean-cross-multiple-columns'], 'jpg')
+end
 
 %% Text scatter plot of English-text eHMIs. Mean vs SD willingness to cross
 % and median response time
->>>>>>> 4348b7e299712c7f874de7d287267d99402bb84a
 figure;hold on;box on
 cd=NaN(180,3);
 cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
@@ -343,9 +401,9 @@ legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-sd-cross'], 'epsc')
+                        filesep 'mean-cross-sd-cross'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-sd-cross'], 'jpg')
+                        filesep 'mean-cross-sd-cross'], 'jpg')
 end
 
 %% Response time USA/VEN
