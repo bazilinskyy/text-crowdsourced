@@ -280,40 +280,6 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 end
 
-%% Text scatter plot of English-text eHMIs. Mean willingness to cross vs
-% median response time
-figure;hold on;box on
-cd=NaN(size(RPo,2),3);
-cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
-cd(allo,:)=repmat([0 0 0], length(allo), 1);
-cd(other,:)=repmat([1 0 0], length(other), 1);
-cd=cd(1:180,:);
-plot(-10,-10,'o','markerfacecolor',cd(ego(1),:),'markersize',10)
-plot(-10,-10,'o','markerfacecolor',cd(allo(1),:),'markersize',10)
-plot(-10,-10,'o','markerfacecolor',cd(other(1),:),'markersize',10)
-h = textscatter([nanmean(RPo(:,1:180))' nanmedian(RTo(:,1:180))'], ...
-                table2cell(eHMI_text(1:180, :)), ...
-                'markersize', 22, ...
-                'colordata', cd, ...
-                'TextDensityPercentage', 100, ...
-                'maxtextlength', 100, ...
-                'fontsize', 10);
-xlabel('Mean willingness to cross (%)');
-ylabel('Median response time (ms)');
-set(gca, 'Fontsize', 20, ...
-    'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [13.5 86.5], ...
-    'ylim', [3400 6400])
-legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
-       'location','northwest')
-% maximise and export as eps and jpg (for readme)
-if config.save_figures
-    export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-mean-cross'], 'epsc')
-    export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-mean-cross'], 'jpg')
-end
-
 %% Multi-column barplot for mean willingness to cross
 [RPo_mean_sorted,RPO_mean_sorted_o]=sort(nanmean(RPo),'ascend');
 
@@ -322,6 +288,9 @@ cd(ego,:)=repmat([0 .9 0], length(ego), 1);
 cd(allo,:)=repmat([0.8 0.8 0.8], length(allo), 1);
 cd(other,:)=repmat([1 .5 0], length(other), 1);
 
+%cd=nanmedian(RTo)-min(nanmedian(RTo));
+%cd=cd'./max(cd);
+%cd=[cd cd cd];
 figure
 subplot(1,4,1)
 b=barh(RPo_mean_sorted(1:114),'facecolor','flat');
@@ -330,11 +299,12 @@ for i=1:114
     text(1,i,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
 end
 
-set(gca,'xlim',[0 85])
-set(gca,'ydir','reverse')
-set(gca,'pos',[0.01 0.045 0.22 0.94])
-set(gca,'yticklabel',{})
-set(gca,'ticklength',[0.005 0])
+set(gca,'xlim',[0 85], ...
+    'pos',[0.01 0.045 0.22 0.95], ...
+    'yticklabel', {}, ...
+    'ytick',[], ...
+    'ticklength', [0.005 0], ...
+    'ydir', 'reverse')
 xlabel('Mean willingness to cross (%)')
 
 subplot(1,4,2)
@@ -345,25 +315,12 @@ for i=115:227
 end
 
 set(gca,'xlim',[0 85], ...
-    'pos',[0.26 0.045 0.22 0.94], ...
+    'pos',[0.24 0.045 0.22 0.95], ...
     'yticklabel', {}, ...
+    'ytick',[], ...
     'ticklength', [0.005 0], ...
     'ydir', 'reverse')
 xlabel('Mean willingness to cross (%)')
-
-
-%subplot(1,4,3)
-%b=barh(RPo_mean_sorted(153:227),'facecolor',[.8 .8 .8],'facecolor','flat');
-%b.CData=cd(RPO_mean_sorted_o(153:227),:);
-%for i=153:227
-%    text(1,i-152,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',8)
-%end
-%set(gca,'xlim',[0 100])
-%set(gca,'ydir','reverse')
-%set(gca,'pos',[0.51 0.045 0.22 0.94])
-%set(gca,'yticklabel',{})
-%set(gca,'ticklength',[0.005 0])
-%xlabel('Mean willingness to cross (%)')
 
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
@@ -384,20 +341,22 @@ cd=cd(1:180,:);
 plot(-10,-10,'o','markerfacecolor',cd(ego(1),:),'markersize',10)
 plot(-10,-10,'o','markerfacecolor',cd(allo(1),:),'markersize',10)
 plot(-10,-10,'o','markerfacecolor',cd(other(1),:),'markersize',10)
-h = textscatter([nanmean(RPo(:,1:180))' nanstd(RPo(:,1:180))'], ...
+h = textscatter([nanmedian(RTo(:,1:180))' nanstd(RPo(:,1:180))'], ...
                 table2cell(eHMI_text(1:180, :)), ...
                 'markersize', 22, ...
                 'colordata', cd, ...
                 'TextDensityPercentage', 75, ...
                 'maxtextlength', 100, ...
-                'fontsize', 13);
-xlabel('Mean willingness to cross (%)');
+                'fontsize', 12);
+xlabel('Median response time (ms)');
 ylabel('\it{SD}\rm willingness to cross (%)');
 set(gca, 'Fontsize', 20, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [13.5 86.5])
+    'xlim', [3400 6800], ...
+    'ylim', [19 32], ...
+    'ticklength', [0.005 0.005])
 legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
-       'location', 'southwest')
+       'location', 'southeast')
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -412,14 +371,14 @@ hold on;
 grid on
 clear h; % empty h object to store colour for the legend
 for i=1:180 % English eHMIs
-    scatter1 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+    scatter1 = scatter(nanmedian(RTo(lang_es==0,i)), nanmedian(RTo(lang_es==1,i)), mapping{i,3}*20, ...
                        'markerfacecolor', 'k', ...
                        'markeredgecolor', 'none');
     scatter1.MarkerFaceAlpha = 0.3;
     h(1) = scatter1(1); % store 1st object for the colour in the legend
 end
 for i=181:227 % Spanish eHMIs
-    scatter2 = scatter(RToMedUS(i), RToMedVE(i), mapping{i,3}*20, ...
+    scatter2 = scatter(nanmedian(RTo(lang_es==0,i)), nanmedian(RTo(lang_es==1,i)), mapping{i,3}*20, ...
                        'markerfacecolor', 'r', ...
                        'markeredgecolor', 'none');
     scatter2.MarkerFaceAlpha = 0.3;
@@ -429,8 +388,8 @@ legend(h, {'eHMIs in English' 'eHMIs in Spanish'}, ...
        'autoupdate', 'off', ...
        'location', 'northwest')
 plot([0 100], [0 100], 'b--')
-xlabel('Median response time - participants from USA');
-ylabel('Median response time - participants from Venezuela');
+xlabel('Median response time - participants with non-Spanish browser');
+ylabel('Median response time - participants with Spanish browser');
 h=findobj('FontName', 'Helvetica');
 set(h, 'FontSize', 20, 'Fontname','Arial')
 set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
@@ -446,11 +405,18 @@ end
 
 %% Response time vs number of characters
 figure;
-hold on;
+hold on
 grid on
-for i=1:227 % English eHMIs
+box on
+for i=1:180 % English eHMIs
     scatter_obj = scatter(mapping{i,3}, nanmedian(RTo(:,i)), 400, ...
                           'markerfacecolor', 'k', ...
+                          'markeredgecolor', 'none');
+    scatter_obj.MarkerFaceAlpha = 0.3;
+end
+for i=181:227 % Spanish eHMIs
+    scatter_obj = scatter(mapping{i,3}, nanmedian(RTo(:,i)), 400, ...
+                          'markerfacecolor', 'r', ...
                           'markeredgecolor', 'none');
     scatter_obj.MarkerFaceAlpha = 0.3;
 end
@@ -501,8 +467,8 @@ end
 legend('Participants with browser language Spanish', ...
        'Participants with browser language English', ...
        'location','southeast')
-xlabel('Mean willingness to cross - eHMI in English');
-ylabel('Mean willingness to cross - eHMI in Spanish');
+xlabel('Mean willingness to cross - eHMI in English (%)');
+ylabel('Mean willingness to cross - eHMI in Spanish (%)');
 h=findobj('FontName', 'Helvetica');
 set(h,'FontSize', 20, 'Fontname', 'Arial')
 set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
@@ -516,7 +482,6 @@ if config.save_figures
     export_figure(gcf, [config.path_figures ...
                         filesep 'median-cross-en-es'], 'jpg')
 end
-
 %% Correlation matrix and plot
 % fetch relevant columns from X for correlation matrix 
 CMATR = X(:,[2:4 6:17]);
@@ -585,14 +550,7 @@ disp(['Correlation matrix Non-Spanish-language participants, ' ...
       'English eHMI texts'])
 disp(round(corr(XCM),2))
 
-%%
-crossego=find(mapping{1:180,7}==1&mapping{1:180,5}==1);
-dontcrossego=find(mapping{1:180,7}==1&mapping{1:180,5}==0);
-%rossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'>50);
-%dontcrossego=find(mapping{1:180,7}==1&nanmean(RPo(:,1:180))'<50);
-Xp=[lang_es X(:,[16 17]) nanmean(RPo(:,crossego),2)-nanmean(RPo(:,dontcrossego), 2) ];
-
-%% Information on browser language
+%% Information on browser language and country
 disp(['Number of participants (1) US & non-es browser, ' ...
       '(2) VE & non-es browser, (3) US & es browser, ...' ...
       '(4) VE & es_browser'])
