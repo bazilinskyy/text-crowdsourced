@@ -372,8 +372,8 @@ cd=NaN(180,3);
 cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
 cd(allo,:)=repmat([0 0 0], length(allo), 1);
 cd(other,:)=repmat([1 0 0], length(other), 1);
-cd=cd(id,:);
 id=find(nanmean(RPo(:,1:180))>45 & nanmean(RPo(:,1:180))<55);
+cd=cd(id,:);
 h = textscatter([nanmean(RPo(:,id))' nanstd(RPo(:,id))'], ...
                 table2cell(eHMI_text(id, :)), ...
                 'markersize', 22, ...
