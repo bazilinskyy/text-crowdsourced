@@ -62,6 +62,9 @@ Standard deviation of willingness to cross. Colours show stimuli that were prese
 ![response willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-usa-ven.jpg?raw=true)
 Median response time for participants from USA and Venezuela.
 
+![learning curve of response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-learning.jpg?raw=true)
+Learning curve of response time.
+
 ![response willingness over number of characters](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-num-chars.jpg?raw=true)
 Median willingness related to the length of the eHMI.
 
