@@ -4,7 +4,7 @@ This project defines a framework for the analysis of crossing behaviour in the i
 ## Citation
 If you use the framework for academic work please cite the following paper.
 
-> Bazilinskyy, P., Dodou, D., & De Winter, J. C. F. (2022). Crowdsourced assessment of the suitability of 227 textual eHMIs for a crossing scenario. Proceedings of AHFE 2022. Available at TBC
+> Bazilinskyy, P., Dodou, D., & De Winter, J. C. F. (2022). Crowdsourced assessment of the suitability of 227 textual eHMIs for a crossing scenario. Proceedings of AHFE 2022. Available at TBC.
 
 ## Setup
 Code for creation of stimuli and QA is written in Python. The project is tested with Python 3.8.5. To setup the environment run these two commands in a parent folder of the downloaded repository (replace `/` with `\` and possibly add `--user` if on Windows:
@@ -17,7 +17,7 @@ For QA, the API key of appen needs to be places in file `text-crowdsourced/secre
 Code for analysis is written in MATLAB. No configuration is needed. To run the analysis code, a config file needs to be created (as described [lower](https://github.com/bazilinskyy/text-crowdsourced#configuration-of-analysis)) and file `text-crowdsourced/analysis/analysis.m` need to be run. The project was tested with MATLAB 2021b. A number of CSV files used data processing are saved in `text-crowdsourced/_output`. Visualisations of all data are saved in `text-crowdsourced/_output/figures/`.
 
 ## Implementation on heroku
-We use [heroku](https://www.heroku.com/) to host the node.js implementation. The demo of the implementation may be viewed [here](https://text-crowdsourced.herokuapp.com/?debug=1&save_data=0). Implementation supports images.
+We use [heroku](https://www.heroku.com/) to host the node.js implementation. The demo of the implementation may be viewed [here](https://text-crowdsourced.herokuapp.com/?debug=1&save_data=0).
 
 ## Crowdsourcing job on appen
 We use [appen](http://appen.com) to run a crowdsourcing job. You need to create a client account to be able to create a launch crowdsourcing job. Preview of the appen job used in this experiment is available [here](https://view.appen.io/channels/cf_internal/jobs/1884388/editor_preview?token=65NVm9aKVsyz_jlitEr3bA).
