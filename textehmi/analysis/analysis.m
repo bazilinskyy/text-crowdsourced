@@ -200,9 +200,9 @@ legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'mean-cross-sd-cross'], 'epsc')
+                        filesep 'median-cross-sd-cross'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'mean-cross-sd-cross'], 'jpg')
+                        filesep 'median-cross-sd-cross'], 'jpg')
 end
 
 %% Figure 4. Scatter plot for Spanish and corresponding English eHMI texts
