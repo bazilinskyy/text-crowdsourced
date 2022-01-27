@@ -504,9 +504,9 @@ set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'response-time-usa-ven'], 'epsc')
+                        filesep 'response-time-en-es'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'response-time-usa-ven'], 'jpg')
+                        filesep 'response-time-en-es'], 'jpg')
 end
 
 %% Response time vs number of characters
