@@ -58,13 +58,7 @@ appen_indices = [19,... % 1. Instructions understood
 %% Read mapping of eHMIs
 mapping = readtable(config.mapping);
 
-%% ************************************************************************
-%% OUTPUT
-%% ************************************************************************
-set(0, 'DefaultFigurePosition', [5 60  1920/2 1080/2]);
-opengl hardware
-
-%% Prepare data
+%% Prepare data for output
 RT = X(:, 27:106);       % time used to press the key
 RP = X(:, 107:186);      % response from the slider
 imageid = X(:,187:266);  % image ids as shown
@@ -120,17 +114,20 @@ ego=find(mapping{:,7}==1 & mapping{:,8}==0);
 allo=find(mapping{:,7}==0 & mapping{:,8}==1);
 other=find(~ismember(1:227, union(ego,allo)));
 
+%% ************************************************************************
+%% OUTPUT
+%% ************************************************************************
+set(0, 'DefaultFigurePosition', [5 60  1920/2 1080/2]);
+opengl hardware
+
 %% Figure 2. Multi-column barplot for crossing percentage
 [RPo_mean_sorted,RPO_mean_sorted_o]=sort(nanmean(RPo),'ascend');
-
+% prepare data
 cd=NaN(size(RPo,2),3);
 cd(ego,:)=repmat([0 .9 0], length(ego), 1);
 cd(allo,:)=repmat([0.8 0.8 0.8], length(allo), 1);
 cd(other,:)=repmat([1 .5 0], length(other), 1);
-
-%cd=nanmedian(RTo)-min(nanmedian(RTo));
-%cd=cd'./max(cd);
-%cd=[cd cd cd];
+% 1st column
 figure
 subplot(1,4,1)
 b=barh(RPo_mean_sorted(1:114),'facecolor','flat');
@@ -138,7 +135,6 @@ b.CData=cd(RPO_mean_sorted_o(1:114),:);
 for i=1:114
     text(1,i,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
 end
-
 set(gca,'xlim',[0 85], ...
     'pos',[0.01 0.045 0.22 0.95], ...
     'yticklabel', {}, ...
@@ -146,14 +142,13 @@ set(gca,'xlim',[0 85], ...
     'ticklength', [0.005 0], ...
     'ydir', 'reverse')
 xlabel('Mean willingness to cross (%)')
-
+% 2nd column
 subplot(1,4,2)
 b=barh(RPo_mean_sorted(115:227),'facecolor',[.8 .8 .8],'facecolor','flat');
 b.CData=cd(RPO_mean_sorted_o(115:227),:);
 for i=115:227
     text(1,i-114,eHMI_text{RPO_mean_sorted_o(i),:},'color','k','fontsize',6)
 end
-
 set(gca,'xlim',[0 85], ...
     'pos',[0.24 0.045 0.22 0.95], ...
     'yticklabel', {}, ...
@@ -161,7 +156,6 @@ set(gca,'xlim',[0 85], ...
     'ticklength', [0.005 0], ...
     'ydir', 'reverse')
 xlabel('Mean willingness to cross (%)')
-
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
@@ -200,9 +194,9 @@ legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
 % maximise and export as eps and jpg (for readme)
 if config.save_figures
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-sd-cross'], 'epsc')
+                        filesep 'scatter-text-en-median'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-sd-cross'], 'jpg')
+                        filesep 'scatter-text-en-median'], 'jpg')
 end
 
 %% Figure 4. Scatter plot for Spanish and corresponding English eHMI texts
@@ -441,6 +435,13 @@ set(gca, 'Fontsize', 20, ...
 t=table(eHMI_text(id(b),:),round(a(:,1),1),round(a(:,2),1),round(a(:,3),4));
 t.Properties.VariableNames={'eHMI','Mean (%)','SD (%)','Median RT (ms)'};
 disp(t)
+% maximise and export as eps and jpg (for readme)
+if config.save_figures
+    export_figure(gcf, [config.path_output filesep 'figures' filesep ...
+                        'scatter-text-en-mean'], 'epsc')
+    export_figure(gcf, [config.path_figures filesep ...
+                        'scatter-text-en-mean'], 'jpg')
+end
 
 %% Response time learning curve
 figure; hold on; grid on
@@ -540,7 +541,7 @@ end
 
 %% Correlation matrix and plot
 % fetch relevant columns from X for correlation matrix 
-CMATR = X(:,[2:4 6:17]);
+CMATR = [X(:,[2:4 6:17 23]) lang_es];
 % compute correlations
 [c_CMATR, p_CMATR] = corr(CMATR, 'type', 'spearman', 'rows', 'pairwise');
 % labels for output
@@ -558,7 +559,9 @@ labels = {'Gend', ...
           'DBQ6', ...
           'DBQ7', ...
           'EN', ...
-          'ES'};
+          'ES', ...
+          'EnQs', ...
+          'Lang'};
 % output of correlation matrix
 printmat(round(c_CMATR*100)/100, ...
          'Spearman correlation matrix', ...
