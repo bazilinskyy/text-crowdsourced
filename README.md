@@ -56,7 +56,7 @@ Mean willingness to cross. Colours show stimuli that were presented in both Engl
 ![sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/sd-cross.jpg?raw=true)
 Standard deviation of willingness to cross. Colours show stimuli that were presented in both English and Spanish.
 
-![mean willingness to sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/scatter-text-en-mean.jpg?raw=true)
+![compellingness score smaller than 5%](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/scatter-text-en-mean.jpg?raw=true)
 eHMIs with a compellingness score smaller than 5%. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
 
 ![response willingness to cross for usa and ven](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-usa-ven.jpg?raw=true)
