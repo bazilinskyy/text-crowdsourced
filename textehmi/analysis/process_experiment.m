@@ -90,10 +90,12 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
         temp3=cell2mat(table2array(raw_heroku(i1,28)));
         % browser language in heroku data
         browser_fetched = temp3(regexp(temp3,'browser_lang:')+14:end-1);
-        if contains(browser_fetched, 'es')
+        if contains(browser_fetched, 'en-')
+            browser_lang = 0;
+        elseif contains(browser_fetched, 'es-')
             browser_lang = 1;
         else
-            browser_lang = 0;
+            browser_lang = 2;
         end
         extracted_row=table2array(raw_heroku(i1,29+N_STIMULI:end));
         imageid(i1,:)=[str2double(temp(12:end)) table2array(raw_heroku(i1,30:29+N_STIMULI-2)) str2num(temp2(1:regexp(temp2,']')-1))];
@@ -129,10 +131,14 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
         end
     end
     %% Remove participants who did not meet the criteria
-    invalid1 = find(X(:,1)==1); % respondents who did not read instructions
-    invalid2 = find(X(:,3)<18);  % respondents who indicated they are under 18 years old
-    invalid3 = find(X(:,26)<300);  % respondents who took less than 5 min to complete
-    invalid5 = find(isnan(sum(X(:,107:186),2))); % respondents with no response data / match
+    % respondents who did not read instructions
+    invalid1 = find(X(:,1)==1);
+    % respondents who indicated they are under 18 years old
+    invalid2 = find(X(:,3)<18);
+    % respondents who took less than 5 min to complete
+    invalid3 = find(X(:,26)<300);
+    % respondents with no response data / match
+    invalid5 = find(isnan(sum(X(:,107:186),2)));
     %% Find rows with identical IP addresses
     y = NaN(size(X(:,1)));
     IPCF_1=NaN(size(raw_appen,1),1);
@@ -151,9 +157,12 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             y(temp(2:end))=2; % no not keep the other ones
         end
     end
-    invalid4=find(y>1); % respondents who completed the survey more than once (i.e., remove the doublets)
-    %% filter out data
-    invalid = unique([invalid1;invalid2;invalid3;invalid4;invalid5]); % Add together all invalid rows with data
+    % respondents who completed the survey more than once (i.e., remove the
+    % doublets)
+    invalid4=find(y>1);
+    %% Filter out data
+    % Add together all invalid rows with data
+    invalid = unique([invalid1;invalid2;invalid3;invalid4;invalid5]);
     X(invalid,:)=[]; % Remove invalid respondents
     Country(invalid)=[]; % Remove invalid countries
     raw_appen(invalid,:)=[]; % Remove invalid respondents
@@ -173,7 +182,9 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, mean = ' num2str(nanmean(X(:,3)))])
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Age, sd = ' num2str(nanstd(X(:,3)))])
     %% Language
-    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to Spanish = ' num2str(sum(X(:,267)))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to English = '  num2str(sum(X(:,267)==0))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to Spanish = '  num2str(sum(X(:,267)==1))])
+    disp([datestr(now, 'HH:MM:SS.FFF') ' - Browser language set to other language = '  num2str(sum(X(:,267)==2))])
     %% Survey time
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time mean (minutes) - After filtering = ' num2str(nanmean(X(:,26)/60))]);
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Survey time median (minutes) - After filtering = ' num2str(nanmedian(X(:,26)/60))]);
