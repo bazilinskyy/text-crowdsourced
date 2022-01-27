@@ -11,7 +11,7 @@ Code for creation of stimuli and QA is written in Python. The project is tested 
 - `pip install -e text-crowdsourced` will setup the project as a package accessible in the environment.
 - `pip install -r text-crowdsourced/requirements.txt` will install required packages.
 
-For QA, the API key of appen needs to be places in file `text-crowdsourced/secret`. The file needs to be formatted as `text-crowdsourced/default.secret`.
+For QA, the API key of appen needs to be placed in file `text-crowdsourced/secret`. The file needs to be formatted as `text-crowdsourced/default.secret`.
 
 ## Analysis
 Code for analysis is written in MATLAB. No configuration is needed. To run the analysis code, a config file needs to be created (as described [lower](https://github.com/bazilinskyy/text-crowdsourced#configuration-of-analysis)) and file `text-crowdsourced/analysis/analysis.m` need to be run. The project was tested with MATLAB 2021b. A number of CSV files used data processing are saved in `text-crowdsourced/_output`. Visualisations of all data are saved in `text-crowdsourced/_output/figures/`.
