@@ -19,5 +19,5 @@ function export_figure(figure, filename, format, maximise)
         set(figure, 'Position', get(0, 'Screensize'));
     end
     % export to eps
-    saveas(figure, filename, format)
+    saveas(figure, filename, format);
 end

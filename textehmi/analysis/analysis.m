@@ -162,6 +162,14 @@ if config.save_figures
                         filesep 'mean-cross-multiple-columns'], 'epsc')
     export_figure(gcf, [config.path_figures ...
                         filesep 'mean-cross-multiple-columns'], 'jpg')
+    % crop figure
+    img = imread([config.path_figures filesep ...
+                  'mean-cross-multiple-columns.jpg']);
+    [rows, columns, numberOfColorChannels] = size(img);
+    img2 = imcrop(img, [0 0 columns/2 rows]);
+    imwrite(img2, ...
+           [config.path_figures filesep 'mean-cross-multiple-columns.jpg'], ...
+           'jpg');
 end
 
 %% Figure 3. Text scatter plot of English-text eHMIs. Median response time
