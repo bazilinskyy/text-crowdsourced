@@ -59,7 +59,7 @@ Standard deviation of willingness to cross. Colours show stimuli that were prese
 ![compellingness score smaller than 5%](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/scatter-text-en-mean.jpg?raw=true)
 eHMIs with a compellingness score smaller than 5%. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
 
-![response willingness to cross for en and es](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-usa-ven.jpg?raw=true)
+![response willingness to cross for en and es](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-en-es.jpg?raw=true)
 Median response time for participants with browser language set to English and Spanish.
 
 ![learning curve of response time](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/response-time-learning.jpg?raw=true)
