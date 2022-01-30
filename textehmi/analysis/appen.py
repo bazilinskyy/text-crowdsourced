@@ -103,7 +103,10 @@ class Appen:
             # load from csv
             df = pd.read_csv(self.file_data)
             # drop code with data row
-            df = df.drop('row0', axis=1)
+            try:
+                df = df.drop('row0', axis=1)
+            except Exception:
+                logger.info('row0 column not found in appen data.')
             # drop _gold columns
             df = df.drop((x for x in df.columns.tolist() if '_gold' in x),
                          axis=1)

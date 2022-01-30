@@ -15,7 +15,7 @@ COLOUR_SAME_EHMI = true;  % flag for colouring eHMI in ES/EN on figures
 
 %% ************************************************************************
 %% Load config
-%% ************************************************************************
+%% **************************there**********************************************
 config = jsondecode(fileread('../../config'));
 
 %% ************************************************************************
@@ -250,9 +250,9 @@ set(gca, 'LooseInset', [0.01 0.01 0.01 0.01], ...
 if config.save_figures
 % maximise and export as eps and jpg (for readme)
     export_figure(gcf, [config.path_output filesep 'figures' ...
-                        filesep 'median-cross-en-es'], 'epsc')
+                        filesep 'ehmis-en-es'], 'epsc')
     export_figure(gcf, [config.path_figures ...
-                        filesep 'median-cross-en-es'], 'jpg')
+                        filesep 'ehmis-en-es'], 'jpg')
 end
 
 %% Median willingness to cross for all stimuli

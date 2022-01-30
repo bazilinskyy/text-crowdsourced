@@ -44,8 +44,8 @@ Mean willingness to cross.
 ![median willingness to sd willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/scatter-text-en-median.jpg?raw=true)
 Median willingness to cross over SD of willingness to cross of eHMIs in English. Colours denote the type of eHMIs: green=egocentric, black=allocentric, red=egocentric and allocentric.
 
-![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross-en-es.jpg?raw=true)
-Median willingness to cross for eHMIs presented in both English and Spanish.
+![ehmis in english and spanish](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/ehmis-en-es.jpg?raw=true)
+Mean willingness to cross for eHMIs presented in both English and Spanish.
 
 ![median willingness to cross](https://github.com/bazilinskyy/text-crowdsourced/blob/main/figures/median-cross.jpg?raw=true)
 Median willingness to cross. Colours show stimuli that were presented in both English and Spanish.
