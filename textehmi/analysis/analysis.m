@@ -600,7 +600,7 @@ set(h, 'Fontname','Arial')
 %disp(round(corr(XCM),2))
 
 XCM=[2*abs(nanmean(RPo(:,1:180)-50))' nanstd(RPo(:,1:180))' nanmedian(RTo(:,1:180))' mapping{1:180,[3 7 8]}];
-disp('Correlation matrix all participants, Enligh-text eHMIs')
+disp([datestr(now, 'HH:MM:SS.FFF') ' - Correlation matrix all participants, Enligh-text eHMIs'])
 disp(round(corr(XCM),2))
 
 % XCM=[abs(50-nanmean(RPo(lang_br==1,181:end)))' ...
@@ -625,8 +625,8 @@ y=zscore(y);x=zscore(x);
 st=regstats(y, x);
 disp([round([stu.beta st.beta st.tstat.t ], 3), ...
       round(1000*st.tstat.pval(1:end))/1000])
-disp(['Number of trials in the regression analysis = ' ...
-     num2str(length(y))])
+disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of trials in the ' ...
+      'regression analysis = ' num2str(length(y))])
 disp([st.fstat.dfr st.fstat.dfe st.fstat.f st.fstat.pval ...
       corr(st.yhat,y) st.rsquare])
 
@@ -652,14 +652,13 @@ t.Properties.VariableNames={'Number of eHMIs','min SD','min SD (%)', ...
 disp(t)
 
 %% Information on browser language and country
-disp(['Number of participants (1) US & non-es browser, ' ...
-      '(2) VE & non-es browser, (3) US & es browser, ...' ...
+disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of participants (1) US & ' ...
+      'non-es browser, (2) VE & non-es browser, (3) US & es browser, ' ...
       '(4) VE & es_browser'])
 disp([sum(contains(Country,'US') & lang_br==0) ...
       sum(contains(Country,'VE') & lang_br==0) ...
       sum(contains(Country,'US') & lang_br==1) ...
       sum(contains(Country,'VE') & lang_br==1)])
-
 g1=contains(Country,'VE');
 g2=contains(Country,'IN');
 disp([sum(g1) sum(g2)
@@ -667,6 +666,12 @@ disp([sum(g1) sum(g2)
       nanmean(X(g1,3)) nanmean(X(g2,3)) % mean age 
       100*(-1+nanmean(X(g1,2))) 100*(-1+nanmean(X(g2,2))) % percentage males
       mean(X(g1,5)==1) mean(X(g2,5)==1)])
+% participants with browser English
+disp([datestr(now, 'HH:MM:SS.FFF') ' - Participants with browser English:'])
+disp(nanmean(X(lang_br==0,[16 17 23])))
+% participants with browser Spanish
+disp([datestr(now, 'HH:MM:SS.FFF') ' - Participants with browser Spanish:'])
+disp(nanmean(X(lang_br==1,[16 17 23])))
 
 %% ************************************************************************
 %% Export of overview of eHMIs to csv
