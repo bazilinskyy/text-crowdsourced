@@ -143,9 +143,9 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
     y = NaN(size(X(:,1)));
     IPCF_1=NaN(size(raw_appen,1),1);
     for i=1:size(raw_appen,1)
-        try IPCF_1(i)=str2double(strrep(raw_appen(i,12),'.',''));
+        try IPCF_1(i)=str2double(strrep(raw_appen(i,appen_indices(28)),'.',''));
         catch
-            IPCF_1(i)=cell2mat(raw_appen(i,12));
+            IPCF_1(i)=cell2mat(raw_appen(i,appen_indices(28)));
         end
     end % reduce IP addresses of appen data to a single number
     for i=1:size(X,1)
@@ -154,7 +154,7 @@ function [X, Country] = process_experiment(appen_file, appen_indices, heroku_fil
             y(i)=1; % keep
         elseif length(temp)>1 % if the IP addres occurs more than once
             y(temp(1))=1; % keep the first survey for that IP address
-            y(temp(2:end))=2; % no not keep the other ones
+            y(temp(2:end))=2; % do not keep the other ones
         end
     end
     % respondents who completed the survey more than once (i.e., remove the

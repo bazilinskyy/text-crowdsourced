@@ -48,7 +48,8 @@ appen_indices = [19,... % 1. Instructions understood
                  7,...  % 23. Start
                  5,...  % 24. End
                  11,...  % 321. Worker id
-                 2];   % worker_code
+                 2,...  % worker_code
+                 15];   % IP
 % process data using external function
 [X, Country] = process_experiment(config.file_appen, ...
                                   appen_indices, ...
