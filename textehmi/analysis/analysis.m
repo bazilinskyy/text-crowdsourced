@@ -560,7 +560,6 @@ h=findobj('FontName','Helvetica');
 set(h, 'Fontname','Arial')
 
 %% Display correlation matrices at the level of stimuli
-
 XCM=[2*abs(nanmean(RPo(:,1:180)-50))' nanstd(RPo(:,1:180))' nanmedian(RTo(:,1:180))' mapping{1:180,[3 7 8]}];
 disp([datestr(now, 'HH:MM:SS.FFF') ' - Correlation matrix all participants, Enligh-text eHMIs'])
 disp(round(corr(XCM),2))
@@ -579,7 +578,6 @@ disp([st.fstat.dfr st.fstat.dfe st.fstat.f st.fstat.pval ...
       corr(st.yhat,y) st.rsquare])
 
 %% Information on browser language
-
 % participants with browser English
 disp([datestr(now, 'HH:MM:SS.FFF') ' - Participants with browser English:'])
 disp(nanmean(X(lang_br==0,[16 17 23])))
