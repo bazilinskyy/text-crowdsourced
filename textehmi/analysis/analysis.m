@@ -4,7 +4,7 @@ clear all;close all;clc; %#ok<*CLALL>
 
 %% ************************************************************************
 %% Constants
-%% ************************************************************************
+%% **********[**************************************************************
 N_STIMULI = 227;  % number of stimuli
 N_PERSON = 80;    % number of stimuli per person
 N_SUB = 20;       % number of top and bottom stimuli to show in
