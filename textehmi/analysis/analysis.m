@@ -188,14 +188,14 @@ h = textscatter([nanmedian(RTo(:,1:180))' nanstd(RPo(:,1:180))'], ...
                 table2cell(eHMI_text(1:180, :)), ...
                 'markersize', 22, ...
                 'colordata', cd, ...
-                'TextDensityPercentage', 75, ...
+                'TextDensityPercentage', 67, ...
                 'maxtextlength', 100, ...
-                'fontsize', 12);
+                'fontsize', 14);
 xlabel('Median response time (ms)');
 ylabel('\it{SD}\rm willingness to cross (%)');
 set(gca, 'Fontsize', 20, ...
     'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [3600 7000], ...
+    'xlim', [3600 7100], ...
     'ylim', [20 35], ...
     'ticklength', [0.005 0.005])
 legend('Egocentric', 'Allocentric', 'Egocentric and allocentric', ...
@@ -417,41 +417,6 @@ if config.save_figures
     export_figure(gcf, [config.path_figures filesep 'sd-cross'], 'jpg')
 end
 
-%% Text scatter plot of English-text eHMIs. Mean willingness to cross and
-% SD willingness to cross and median response time
-figure;hold on;box on
-cd=NaN(180,3);
-cd(ego,:)=repmat([0 0.8 0], length(ego), 1);
-cd(allo,:)=repmat([0 0 0], length(allo), 1);
-cd(other,:)=repmat([1 0 0], length(other), 1);
-id=find(nanmean(RPo(:,1:180))>45 & nanmean(RPo(:,1:180))<55);
-cd=cd(id,:);
-h = textscatter([nanmean(RPo(:,id))' nanstd(RPo(:,id))'], ...
-                table2cell(eHMI_text(id, :)), ...
-                'markersize', 22, ...
-                'colordata', cd, ...
-                'TextDensityPercentage', 100, ...
-                'maxtextlength', 100, ...
-                'fontsize', 14);
-xlabel('Mean willingness to cross (%)');
-ylabel('\it{SD}\rm willingness to cross (%)');
-set(gca, 'Fontsize', 20, ...
-    'LooseInset', [0.01 0.01 0.01 0.01], ...
-    'xlim', [45 56], ...
-    'ylim', [21 34], ...
-    'ticklength', [0.005 0.005])
-[a,b]=sortrows([nanmean(RPo(:,id))' nanstd(RPo(:,id))' nanmedian(RTo(:,id))'], 2);
-t=table(eHMI_text(id(b),:),round(a(:,1),1),round(a(:,2),1),round(a(:,3),4));
-t.Properties.VariableNames={'eHMI','Mean (%)','SD (%)','Median RT (ms)'};
-disp(t)
-% maximise and export as eps and jpg (for readme)
-if config.save_figures
-    export_figure(gcf, [config.path_output filesep 'figures' filesep ...
-                        'scatter-text-en-mean'], 'epsc')
-    export_figure(gcf, [config.path_figures filesep ...
-                        'scatter-text-en-mean'], 'jpg')
-end
-
 %% Response time learning curve
 figure; hold on; grid on
 plot(nanmedian(RT),'k-o','Linewidth',3)
@@ -468,7 +433,7 @@ if config.save_figures
                         'response-time-learning'], 'jpg')
 end
 
-%% Response time USA/VEN
+%% Response time for different broswer languages
 figure;
 hold on;
 grid on;
@@ -595,27 +560,10 @@ h=findobj('FontName','Helvetica');
 set(h, 'Fontname','Arial')
 
 %% Display correlation matrices at the level of stimuli
-%XCM=[abs(50-nanmean(RPo))' nanmean(RTo)' mapping{:,[3 7 8]}];
-%disp('Correlation matrix all participants, all eHMIs')
-%disp(round(corr(XCM),2))
 
 XCM=[2*abs(nanmean(RPo(:,1:180)-50))' nanstd(RPo(:,1:180))' nanmedian(RTo(:,1:180))' mapping{1:180,[3 7 8]}];
 disp([datestr(now, 'HH:MM:SS.FFF') ' - Correlation matrix all participants, Enligh-text eHMIs'])
 disp(round(corr(XCM),2))
-
-% XCM=[abs(50-nanmean(RPo(lang_br==1,181:end)))' ...
-%      nanmedian(RTo(lang_br==1,181:end))' ...
-%      mapping{181:end,[3 7 8]}];
-% disp(['Correlation matrix Spanish-language participants, ' ...
-%       'Spanish eHMI texts'])
-% disp(round(corr(XCM),2))
-% 
-% XCM=[abs(50-nanmean(RPo(lang_br==0,1:180)))' ...
-%      nanmedian(RTo(lang_br==0,1:180))' ...
-%      mapping{1:180,[3 7 8]}];
-% disp(['Correlation matrix Non-Spanish-language participants, ' ...
-%       'English eHMI texts'])
-% disp(round(corr(XCM),2))
 
 %% Table. Regression model statistics
 y=XCM(:,3);
@@ -630,42 +578,8 @@ disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of trials in the ' ...
 disp([st.fstat.dfr st.fstat.dfe st.fstat.f st.fstat.pval ...
       corr(st.yhat,y) st.rsquare])
 
-%% SD analysis in groups of 10%
-[Number_of_eHMIs,MinSD,MinSDindex,MaxSD,MaxSDindex]=deal(NaN(10,1));
-for i=1:9
-    ehmi_indexes=find(nanmean(RPo(:,1:180))>5+(i-1)*10 & nanmean(RPo(:,1:180))<5+i*10);
-Number_of_eHMIs(i)=length(ehmi_indexes);
-    try
-    [MinSD(i) minsdindex]=min(nanmedian(RTo(:,ehmi_indexes)));
-    [MaxSD(i) maxsdindex]=max(nanmedian(RTo(:,ehmi_indexes)));
-        MinSDindex(i)=ehmi_indexes(minsdindex);
-        MaxSDindex(i)=ehmi_indexes(maxsdindex);
-    end
-end
-MinSD=round(MinSD,1);
-MaxSD=round(MaxSD,1);
-id=find(Number_of_eHMIs>0);
-t=table(Number_of_eHMIs(id), eHMI_text(MinSDindex(id),:), MinSD(id), ...
-        eHMI_text(MaxSDindex(id),:),MaxSD(id));
-t.Properties.VariableNames={'Number of eHMIs','min SD','min SD (%)', ...
-                            'max SD','max SD (%)'};
-disp(t)
+%% Information on browser language
 
-%% Information on browser language and country
-disp([datestr(now, 'HH:MM:SS.FFF') ' - Number of participants (1) US & ' ...
-      'non-es browser, (2) VE & non-es browser, (3) US & es browser, ' ...
-      '(4) VE & es_browser'])
-disp([sum(contains(Country,'US') & lang_br==0) ...
-      sum(contains(Country,'VE') & lang_br==0) ...
-      sum(contains(Country,'US') & lang_br==1) ...
-      sum(contains(Country,'VE') & lang_br==1)])
-g1=contains(Country,'VE');
-g2=contains(Country,'IN');
-disp([sum(g1) sum(g2)
-      nanmedian(X(g1,26)) nanmedian(X(g2,26)) % survey duration
-      nanmean(X(g1,3)) nanmean(X(g2,3)) % mean age 
-      100*(-1+nanmean(X(g1,2))) 100*(-1+nanmean(X(g2,2))) % percentage males
-      mean(X(g1,5)==1) mean(X(g2,5)==1)])
 % participants with browser English
 disp([datestr(now, 'HH:MM:SS.FFF') ' - Participants with browser English:'])
 disp(nanmean(X(lang_br==0,[16 17 23])))
