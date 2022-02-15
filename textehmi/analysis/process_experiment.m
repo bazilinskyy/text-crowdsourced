@@ -5,10 +5,10 @@
 function [X, Country] = process_experiment(appen_file, appen_indices, heroku_file, N_STIMULI)
     %% Load data
     % Import csv file with keypress data
-    raw_heroku = readtable(heroku_file,'ReadVariableNames',0);
+    raw_heroku = readtable(heroku_file, 'ReadVariableNames', false);
     % Import csv file with appen data (crowdsourced study)
-    % TODO: fix warning abuot datetime format
-    raw_appen = readtable(appen_file, 'ReadVariableNames', false);
+    % TODO: fix warning about datetime format
+    raw_appen = readtable(appen_file, 'ReadVariableNames', true);
     raw_appen = table2cell(raw_appen);  % convert to cell array for ease of checking
     %% Process appen data
     disp([datestr(now, 'HH:MM:SS.FFF') ' - Processing appen data']);
